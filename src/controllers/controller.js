@@ -5,15 +5,19 @@ const sql = require('mssql');
 
 ctrl.getIndex = async(req, res) => {
     ssn = req.session;
-    ssn.auth = false;
-    res.render('auth/signin');
+    console.log('Variable session index: ', ssn.auth);
+    if (ssn.auth) {
+        res.render('index');
+    } else {
+        ssn.auth = false;
+        res.render('auth/signin');
+    }
 };
 
 ctrl.postIndex = async(req, res) => {
     const { username, password } = req.body;
     ssn = req.session;
-    hash = await helpers.encryptPassword(password);
-    console.log("Password encriptado: ", hash);
+    // hash = await helpers.encryptPassword(password);
 
     let query = `select * from sgv_usuarios where usuario=@usuario;`;
 
@@ -27,7 +31,6 @@ ctrl.postIndex = async(req, res) => {
         console.log(error);
         return;
     }
-    console.log(respuesta);
 
     if (respuesta.recordset.length < 1) {
         console.log("Usuario no encontrado");
@@ -38,11 +41,11 @@ ctrl.postIndex = async(req, res) => {
         if (await helpers.matchPassword(password, passwordBD)) {
             console.log("Contraseña correcta!");
             ssn.auth = true;
+            console.log('Variable session: ', ssn.auth);
             res.render('index');
         } else {
             let msjError = { msj: "Contraseña incorrecta!" };
             console.log("Contraseña incorrecta!");
-            ssn.auth = false;
             res.render('auth/signin', { msjError });
         }
     }
@@ -55,75 +58,95 @@ ctrl.getSalir = async(req, res) => {
 };
 ctrl.getVehiculos = async(req, res) => {
 
-    let vehiculos = "";
+    if (req.session.auth) {
+        let vehiculos = "";
 
-    try {
-        await sql.connect(databaseSqlServer);
-        vehiculos = await sql.query(`select v.chasis, v.chapa, c.cliente, v.descripcion, v.id
-        from sgv_vehiculos v
-        left join sgv_clientes c on c.id = v.id_cliente;`);
-        console.log(vehiculos.recordset);
+        try {
+            await sql.connect(databaseSqlServer);
+            vehiculos = await sql.query(`select v.chasis, v.chapa, c.cliente, v.descripcion, v.id
+            from sgv_vehiculos v
+            left join sgv_clientes c on c.id = v.id_cliente;`);
+            console.log(vehiculos.recordset);
 
-    } catch (error) {
-        console.log(error);
-        let msj = { msj: "Ocurrio un error al recuperar datos." };
-        res.redirect('/', { msj });
-        return;
+        } catch (error) {
+            console.log(error);
+            let msj = { msj: "Ocurrio un error al recuperar datos." };
+            res.redirect('/', { msj });
+            return;
+        }
+
+        let check = false;
+
+        res.render('vehiculos', { vehiculos, check });
+    } else {
+        req.session.auth = false;
+        res.redirect('/');
     }
-
-    let check = false;
-
-    res.render('vehiculos', { vehiculos, check });
 };
 ctrl.getVehiculosVendidos = async(req, res) => {
 
-    let vehiculos = "";
+    if (req.session.auth) {
+        let vehiculos = "";
 
-    try {
-        await sql.connect(databaseSqlServer);
-        vehiculos = await sql.query(`select v.chasis, v.chapa, c.cliente, v.descripcion, v.id
-        from sgv_vehiculos v
-        join sgv_clientes c on c.id = v.id_cliente;`);
-    } catch (error) {
-        console.log(error);
-        let msj = { msj: "Ocurrio un error al recuperar datos." };
-        res.redirect('/', { msj });
-        return;
+        try {
+            await sql.connect(databaseSqlServer);
+            vehiculos = await sql.query(`select v.chasis, v.chapa, c.cliente, v.descripcion, v.id
+            from sgv_vehiculos v
+            join sgv_clientes c on c.id = v.id_cliente;`);
+        } catch (error) {
+            console.log(error);
+            let msj = { msj: "Ocurrio un error al recuperar datos." };
+            res.redirect('/', { msj });
+            return;
+        }
+
+        let check = true;
+
+        res.render('vehiculos', { vehiculos, check });
+    } else {
+        req.session.auth = false;
+        res.redirect('/');
     }
 
-    let check = true;
-
-    res.render('vehiculos', { vehiculos, check });
 };
 ctrl.getDatosVehiculo = async(req, res) => {
+    if (req.session.auth) {
+        try {
+            vehiculo = await ObtenerDatosVehiculoPorId(req.params.id);
+        } catch (error) {
+            console.log(error);
+            let msj = { msj: "Ocurrio un error al recuperar datos." };
+            res.redirect('/vehiculos', { msj });
+            return;
+        }
 
-    try {
-        vehiculo = await ObtenerDatosVehiculoPorId(req.params.id);
-    } catch (error) {
-        console.log(error);
-        let msj = { msj: "Ocurrio un error al recuperar datos." };
-        res.redirect('/vehiculos', { msj });
-        return;
+        res.render('ver-datos-vehiculo', { vehiculo });
+    } else {
+        req.session.auth = false;
+        res.redirect('/');
     }
-
-    res.render('ver-datos-vehiculo', { vehiculo });
 }
 ctrl.getActualizarDatosVehiculo = async(req, res) => {
 
-    try {
-        vehiculo = await ObtenerDatosVehiculoPorId(req.params.id);
-        modelos = await ObtenerDatosModelos();
-        talleres = await ObtenerDatosTalleres();
-        formasPago = await ObtenerDatosFormasPago();
-        ubicaciones = await ObtenerDatosUbicaciones();
-    } catch (error) {
-        console.log(error);
-        let msjError = { msj: "Ocurrio un error al recuperar datos." };
-        res.redirect('/vehiculos', { msjError });
-        return;
-    }
+    if (req.session.auth) {
+        try {
+            vehiculo = await ObtenerDatosVehiculoPorId(req.params.id);
+            modelos = await ObtenerDatosModelos();
+            talleres = await ObtenerDatosTalleres();
+            formasPago = await ObtenerDatosFormasPago();
+            ubicaciones = await ObtenerDatosUbicaciones();
+        } catch (error) {
+            console.log(error);
+            let msjError = { msj: "Ocurrio un error al recuperar datos." };
+            res.redirect('/vehiculos', { msjError });
+            return;
+        }
 
-    res.render('actualizar-datos-vehiculo', { vehiculo, modelos, talleres, formasPago, ubicaciones });
+        res.render('actualizar-datos-vehiculo', { vehiculo, modelos, talleres, formasPago, ubicaciones });
+    } else {
+        req.session.auth = false;
+        res.redirect('/');
+    }
 }
 ctrl.postActualizarDatosVehiculo = async(req, res) => {
     const { taller, modelo, ubicacion, formaPago, chapa, id } = req.body;
