@@ -1,0 +1,201 @@
+<script src="https://use.fontawesome.com/08f85aae79.js"></script>
+
+<div class="mx-auto my-2" style="width: 400px;">
+    <h1>Datos del vehículo</h1>
+</div>
+
+{{#if msjError}}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{msjError.msj}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/if}}
+{{#if msjOk}}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{msjOk.msj}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/if}}
+
+<div class="container-fluid" style="width:65%">
+    {{!-- Chasis y Descripción --}}
+    <div class="form-row mb-3 mt-4">
+
+        <div class="form-group col-md-1">
+            <label class="form-label">Chasis:</label>
+        </div>
+
+        <div class="form-group col-md-4">                
+            <input class="form-control" value="{{ vehiculo.chasis }}" disabled>
+        </div>
+
+        <div class="form-group col-md-1">
+        </div>
+
+        <div class="form-group col-md-1">
+            <label class="form-label">Descripción:</label>
+        </div>
+
+        <div class="form-group col-md-4">                
+            <input class="form-control" value="{{ vehiculo.descripcion }}" disabled>
+        </div>
+
+        <div class="form-group col-md-1">
+        </div>
+
+    </div>
+    {{!-- Cliente y Fecha Venta --}}
+    <div class="form-row mb-3 mt-4">
+
+        <div class="form-group col-md-1">
+            <label class="form-label">Cliente:</label>
+        </div>
+
+        <div class="form-group col-md-4">                
+            <input class="form-control" value="{{ vehiculo.cliente }}" disabled>
+        </div>
+
+        <div class="form-group col-md-1">
+        </div>
+
+        <div class="form-group col-md-1">
+            <label for="exampleDataList" class="form-label">Fecha venta: </label>
+        </div>
+
+        <div class="form-group col-md-4">                
+            <input class="form-control" value="{{ vehiculo.fecha_vta }}" disabled>
+        </div>   
+
+        <div class="form-group col-md-1">
+        </div>   
+
+ 
+
+    </div>
+    {{!-- Moneda y Saldo --}}
+    <div class="form-row mb-3 mt-4">
+
+        <div class="form-group col-md-1">
+            <label class="form-label">Moneda:</label>
+        </div>
+
+        <div class="form-group col-md-4">                
+            <input class="form-control" value="{{ vehiculo.moneda }}" disabled>
+        </div>
+
+        <div class="form-group col-md-1">
+        </div>
+  
+        <div class="form-group col-md-1">
+            <label class="form-label">Saldo:</label>
+        </div>
+
+        <div class="form-group col-md-4">                
+            <input class="form-control" value="{{ vehiculo.saldo }}" disabled>
+        </div>
+
+        <div class="form-group col-md-1">
+        </div>
+
+    </div>
+    {{!-- Fecha Importación y Chapa --}}
+    <div class="form-row mb-3 mt-4">
+
+        <div class="form-group col-md-1">
+            <label for="exampleDataList" class="form-label">Fecha importación:</label>
+        </div>
+
+        <div class="form-group col-md-4">                
+            <input class="form-control" value="{{ vehiculo.fecha_imp }}" disabled>
+        </div>   
+
+        <div class="form-group col-md-1">
+        </div>   
+
+        <div class="form-group col-md-1">
+            <label for="exampleDataList" class="form-label" value="{{ vehiculo.chapa }}">Chapa:</label>
+        </div>
+
+        <div class="form-group col-md-4">                
+            <input class="form-control" disabled>
+        </div>   
+
+        <div class="form-group col-md-1">
+        </div>     
+
+    </div>
+    {{!-- Forma de Pago y Modelo --}}
+    <div class="form-row mb-3 mt-4">
+
+        <div class="form-group col-md-1">
+            <label for="exampleDataList" class="form-label">Forma de pago: </label>
+        </div>
+
+        <div class="form-group col-md-4">                
+            <input class="form-control" value="{{ vehiculo.forma }}" disabled>
+        </div>   
+
+        <div class="form-group col-md-1">
+        </div>   
+
+        <div class="form-group col-md-1">
+            <label for="exampleDataList" class="form-label">Modelo:</label>
+        </div>
+
+        <div class="form-group col-md-4">                
+            <input class="form-control" value="{{ vehiculo.modelo }}" disabled>
+        </div>   
+
+        <div class="form-group col-md-1">
+        </div>    
+
+    </div>
+    {{!-- Ubicacion y Taller autorizado --}}
+    <div class="form-row mb-3 mt-4">
+
+        <div class="form-group col-md-1">
+            <label class="form-label">Ubicación:</label>
+        </div>
+
+        <div class="form-group col-md-4">                
+            <input class="form-control" value="{{ vehiculo.ubi }}" disabled>
+        </div>
+
+        <div class="form-group col-md-1">
+        </div>
+
+        <div class="form-group col-md-1">
+            <label for="exampleDataList" class="form-label">Taller autorizado: </label>
+        </div>
+
+        <div class="form-group col-md-4">                
+            <input class="form-control" value="{{ vehiculo.taller }}" disabled>
+        </div>   
+
+        <div class="form-group col-md-1">
+        </div>     
+
+    </div>
+
+    <div class="form-row justify-content-md-center my-5">
+        <a href="/actualizar-datos-vehiculo/{{ vehiculo.id}}" class="btn btn-success mx-3">Actualizar datos</a>
+        <a href="/vehiculos" class="btn btn-warning mx-3">Volver</a>
+    </div>
+
+</div>

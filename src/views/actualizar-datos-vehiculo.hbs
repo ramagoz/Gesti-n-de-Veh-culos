@@ -1,0 +1,436 @@
+<div class="mx-auto my-2" style="width: 600px;">
+    <h1>Actualizar datos del vehículo</h1>
+</div>
+
+{{#if msjError}}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{msjError.msj}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/if}}
+{{#if msjOk}}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{msjOk.msj}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/if}}
+
+<div class="container-fluid" style="width:65%">
+
+    {{!-- Formulario Modelo Vehiculo --}}
+    <div class="row" id="formulario-modelo" style="display: none;">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8 mx-auto">
+            <div class="card text-center my-3 mx-auto" id="registrar-cliente">
+                <h5 class="card-header">Registrar Modelo de Vehículo</h3>
+                <div class="card-body">
+                    <form action="/agregar-modelo" method="POST">
+                        <div class="row justify-content-md-center">
+                            <div class="form-group col-md-2">
+                                <label class="form-label" for="">Modelo:</label>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input class="form-control" type="text" name="modelo" id="inputModelo" required>
+                            </div>
+                        </div>
+                        
+                        <input class="form-control" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
+
+                        <div class="row justify-content-md-center mt-2">
+                            <button type="submit" class="btn btn-primary mx-1">Confirmar</button>
+                            <a href="#" onclick="cerrarFormularioModelo()" class="btn btn-danger mx-1">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{!-- Formulario Forma de Pago --}}
+    <div class="row" id="formulario-forma-pago" style="display: none;">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8 mx-auto">
+            <div class="card text-center my-3 mx-auto" id="registrar-cliente">
+                <h5 class="card-header">Registrar Forma de Pago</h3>
+                <div class="card-body">
+                    <form action="/agregar-forma-pago" method="POST">
+                        <div class="row justify-content-md-center">
+                            <div class="form-group col-md-2">
+                                <label class="form-label" for="">Forma de Pago:</label>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input class="form-control" type="text" name="formaPago" required id="inputFormaPago">
+                            </div>
+                        </div>
+                        
+                        <input class="form-control" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
+
+                        <div class="row justify-content-md-center mt-2">
+                            <button type="submit" class="btn btn-primary mx-1">Confirmar</button>
+                            <a href="#" onclick="cerrarFormularioFormaPago()" class="btn btn-danger mx-1">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{!-- Formulario Ubicación --}}
+    <div class="row" id="formulario-ubicacion" style="display: none;">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8 mx-auto">
+            <div class="card text-center my-3 mx-auto" id="registrar-cliente">
+                <h5 class="card-header">Registrar Ubicación</h3>
+                <div class="card-body">
+                    <form action="/agregar-ubicacion" method="POST">
+                        <div class="row justify-content-md-center">
+                            <div class="form-group col-md-2">
+                                <label class="form-label" for="">Ubicación:</label>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input class="form-control" type="text" name="ubicacion" required id="inputUbicacion">
+                            </div>
+                        </div>
+                        
+                        <input class="form-control" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
+
+                        <div class="row justify-content-md-center mt-2">
+                            <button type="submit" class="btn btn-primary mx-1">Confirmar</button>
+                            <a onclick="cerrarFormularioUbicacion()" class="btn btn-danger mx-1">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{!-- Formulario Taller Autorizado --}}
+    <div class="row" id="formulario-taller" style="display: none;"> 
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8 mx-auto">
+            <div class="card text-center my-3 mx-auto" id="registrar-cliente">
+                <h5 class="card-header">Registrar Taller Autorizado</h3>
+                <div class="card-body">
+                    <form action="/agregar-taller" method="POST">
+                        <div class="row justify-content-md-center">
+                            <div class="form-group col-md-2">
+                                <label class="form-label" for="">Taller autorizado: </label>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input id="inputTaller" class="form-control" type="text" name="taller" required>
+                            </div>
+                        </div>
+                        
+                        <input class="form-control" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
+
+                        <div class="row justify-content-md-center mt-2">
+                            <button type="submit" class="btn btn-primary mx-1">Confirmar</button>
+                            <a onclick="cerrarFormularioTaller()" class="btn btn-danger mx-1">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form action="/actualizar-datos-vehiculo" method="POST" autocomplete="off">
+        
+        {{!-- Chasis y Descripción --}}
+        <div class="form-row mb-3 mt-4">
+
+            <div class="form-group col-md-1">
+                <label class="form-label">Chasis:</label>
+            </div>
+
+            <div class="form-group col-md-4">                
+                <input class="form-control" value="{{ vehiculo.chasis }}" disabled>
+            </div>
+
+            <div class="form-group col-md-1">
+                
+            </div>
+
+            <div class="form-group col-md-1">
+                <label class="form-label">Descripción:</label>
+            </div>
+
+            <div class="form-group col-md-4">                
+                <input class="form-control" value="{{ vehiculo.descripcion }}" disabled >
+            </div>
+
+            <div class="form-group col-md-1">
+            </div>
+
+   
+
+        </div>
+        {{!-- Cliente y Fecha venta --}}
+        <div class="form-row mb-3 mt-4">
+
+            <div class="form-group col-md-1">
+                <label class="form-label">Cliente:</label>
+            </div>
+
+            <div class="form-group col-md-4">                
+                <input class="form-control" value="{{ vehiculo.cliente }}" disabled>
+            </div>
+
+            <div class="form-group col-md-1">
+            </div>
+
+            <div class="form-group col-md-1">
+                <label for="exampleDataList" class="form-label">Fecha venta: </label>
+            </div>
+
+            <div class="form-group col-md-4">                
+                <input class="form-control" value="{{ vehiculo.fecha_vta }}" disabled>
+            </div>   
+
+            <div class="form-group col-md-1">
+            </div>     
+
+        </div>
+        {{!-- Moneda y Saldo --}}
+        <div class="form-row mb-3 mt-4">
+
+            <div class="form-group col-md-1">
+                <label class="form-label">Moneda:</label>
+            </div>
+
+            <div class="form-group col-md-4">                
+                <input class="form-control" value="{{ vehiculo.moneda }}" disabled>
+            </div>
+
+            <div class="form-group col-md-1">
+            </div>
+
+            <div class="form-group col-md-1">
+                <label class="form-label">Saldo:</label>
+            </div>
+
+            <div class="form-group col-md-4">                
+                <input class="form-control" value="{{ vehiculo.saldo }}" disabled>
+            </div>
+
+            <div class="form-group col-md-1">
+            </div>
+
+        </div>        
+        {{!-- Fecha importación y Chapa --}}
+        <div class="form-row mb-3 mt-4">
+
+            <div class="form-group col-md-1">
+                <label for="exampleDataList" class="form-label">Fecha importación:</label>
+            </div>
+
+            <div class="form-group col-md-4">                
+                <input class="form-control" value="{{ vehiculo.fecha_imp }}" disabled>
+            </div>   
+
+            <div class="form-group col-md-1">
+            </div> 
+
+            <div class="form-group col-md-1">
+                <label for="exampleDataList" class="form-label" >Chapa:</label>
+            </div>
+
+            <div class="form-group col-md-4">                
+                <input class="form-control" value="{{ vehiculo.chapa }}" name="chapa">
+            </div>   
+
+            <div class="form-group col-md-1">
+            </div>  
+
+ 
+
+        </div>   
+        {{!-- Forma de Pago y Modelo --}}
+        <div class="form-row mb-3 mt-4">
+
+            <div class="form-group col-md-1">
+                <label for="exampleDataList" class="form-label">Forma de pago: </label>
+            </div>
+
+            <div class="form-group col-md-4">                
+                <input value="{{ vehiculo.forma }}" id="inputListFormaPago" class="form-control" list="listaFormasPago" placeholder="Escribe la forma de pago" name="formaPago">
+                <datalist id="listaFormasPago">
+                    {{#each formasPago}}
+                        <option>{{ forma }}</option>
+                    {{/each}}
+                </datalist>
+
+            </div>   
+
+            <div class="form-group col-md-1">
+                <a href="#" onclick="registrarFormaPago()"><i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
+            </div>  
+
+            <div class="form-group col-md-1">
+                <label for="exampleDataList" class="form-label">Modelo:</label>
+            </div>
+
+            <div class="form-group col-md-4">                
+                <input value="{{ vehiculo.modelo }}" id="inputListModelo" class="form-control" list="listaModelos" placeholder="Escribe el modelo" name="modelo">
+                <datalist id="listaModelos">
+                    {{#each modelos}}
+                        <option>{{ modelo }}</option>
+                    {{/each}}
+                </datalist>
+            </div>   
+
+            <div class="form-group col-md-1">
+                <a href="#" onclick="registrarModelo()"><i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
+            </div>    
+    
+
+        </div>             
+        {{!-- Ubicacion y Taller autorizado --}}
+        <div class="form-row mb-3 mt-4">
+
+            <div class="form-group col-md-1">
+                <label class="form-label">Ubicación:</label>
+            </div>
+
+            <div class="form-group col-md-4">                
+                <input value="{{ vehiculo.ubi }}" id="inputListUbicacion" class="form-control" list="listaUbicaciones" placeholder="Escribe la ubicación" name="ubicacion">
+                <datalist id="listaUbicaciones">
+                    {{#each ubicaciones}}
+                        <option>{{ ubi }}</option>
+                    {{/each}}
+                </datalist>
+            </div>
+
+            <div class="form-group col-md-1">
+                <a href="#" onclick="registrarUbicacion()"><i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
+            </div>
+
+            <div class="form-group col-md-1">
+                <label for="exampleDataList" class="form-label">Taller autorizado: </label>
+            </div>
+
+            <div class="form-group col-md-4">                
+                <input value="{{ vehiculo.taller }}" id="inputListTaller" class="form-control" list="listaTalleres" placeholder="Escribe el taller" name="taller">
+                <datalist id="listaTalleres">
+                    {{#each talleres}}
+                        <option>{{ taller }}</option>
+                    {{/each}}
+                </datalist>
+            </div>   
+
+            <div class="form-group col-md-1">
+                <a href="#" onclick="registrarTaller()"><i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
+            </div>     
+
+        </div>
+
+        <input class="form-control" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
+
+        <div class="form-row justify-content-md-center my-5">
+            <button type="submit" class="btn btn-success mx-3">Guardar</button>
+            <a href="/vehiculos" class="btn btn-danger mx-3">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<script>
+
+    function registrarModelo() {
+        var x = document.getElementById("formulario-modelo");
+
+        if (x.style.display === "none") {
+            cerrarFormularios();
+            x.style.display = "block";
+            document.getElementById('inputModelo').focus();
+        } else {
+            document.getElementById('inputListModelo').focus();
+            x.style.display = "none";
+        }
+    }
+
+    function cerrarFormularioModelo(){
+        var x = document.getElementById("formulario-modelo");
+        x.style.display = "none";
+        document.getElementById('inputListModelo').focus();
+    }
+
+    function registrarFormaPago() {
+        var x = document.getElementById("formulario-forma-pago");
+
+        if (x.style.display === "none") {
+            cerrarFormularios();
+            x.style.display = "block";
+            document.getElementById('inputFormaPago').focus();
+        } else {
+            document.getElementById('inputListFormaPago').focus();
+            x.style.display = "none";
+        }
+    }
+
+    function cerrarFormularioFormaPago(){
+        var x = document.getElementById("formulario-forma-pago");
+        x.style.display = "none";
+        document.getElementById('inputListFormaPago').focus();
+    }
+
+    function registrarUbicacion() {
+        var x = document.getElementById("formulario-ubicacion");
+
+        if (x.style.display === "none") {
+            cerrarFormularios();
+            x.style.display = "block";
+            document.getElementById('inputUbicacion').focus();
+        } else {
+            document.getElementById('inputListUbicacion').focus();
+            x.style.display = "none";
+        }
+    }
+
+    function cerrarFormularioUbicacion(){
+        var x = document.getElementById("formulario-ubicacion");
+        x.style.display = "none";
+        document.getElementById('inputListUbicacion').focus();
+    }
+
+    function registrarTaller() {
+        var x = document.getElementById("formulario-taller");
+
+        if (x.style.display === "none") {
+            cerrarFormularios();
+            x.style.display = "block";
+            document.getElementById('inputTaller').focus();
+        } else {
+            document.getElementById('inputListTaller').focus();
+            x.style.display = "none";
+        }
+    }
+
+    function cerrarFormularioTaller(){
+        var x = document.getElementById("formulario-taller");
+        x.style.display = "none";
+        document.getElementById('inputListTaller').focus();
+    }
+
+    function cerrarFormularios(){
+        var x = document.getElementById("formulario-modelo");
+        x.style.display = "none";
+        x = document.getElementById("formulario-forma-pago");
+        x.style.display = "none";
+        x = document.getElementById("formulario-ubicacion");
+        x.style.display = "none";
+        x = document.getElementById("formulario-taller");        
+        x.style.display = "none";
+    }
+
+</script>
