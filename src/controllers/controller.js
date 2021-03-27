@@ -13,12 +13,11 @@ ctrl.getIndex = async(req, res) => {
         res.render('auth/signin');
     }
 };
-
 ctrl.postIndex = async(req, res) => {
     const { username, password } = req.body;
     ssn = req.session;
-    // hash = await helpers.encryptPassword(password);
-
+    hash = await helpers.encryptPassword(password);
+    console.log("Pass: ", hash);
     let query = `select * from sgv_usuarios where usuario=@usuario;`;
 
     try {
@@ -38,6 +37,7 @@ ctrl.postIndex = async(req, res) => {
         res.render('auth/signin', { msjError });
     } else {
         passwordBD = respuesta.recordset[0].clave;
+        ssn.user = respuesta.recordset[0].usuario;
         if (await helpers.matchPassword(password, passwordBD)) {
             console.log("Contraseña correcta!");
             ssn.auth = true;
@@ -53,6 +53,7 @@ ctrl.postIndex = async(req, res) => {
 ctrl.getSalir = async(req, res) => {
     ssn = req.session;
     ssn.auth = false;
+    ssn.destroy();
     console.log("Cerrando sesión.");
     res.render('auth/signin');
 };
@@ -318,7 +319,68 @@ ctrl.postAgregarTaller = async(req, res) => {
     let msjOk = { msj: "Taller creado correctamente! " };
     res.render('actualizar-datos-vehiculo', { vehiculo, msjOk, modelos, talleres, formasPago, ubicaciones });
 };
+ctrl.getCambiarClave = async(req, res) => {
+    if (req.session.auth) {
+        res.render('cambiar-clave');
+    } else {
+        req.session.auth = false;
+        res.render('auth/signin');
+    }
+};
+ctrl.postCambiarClave = async(req, res) => {
+    if (req.session.auth) {
+        let msjOk, msjError;
+        const { passwordActual, passwordNuevo, passwordConfirmar } = req.body;
+        usuario = req.session.user;
 
+        let query = `select * from sgv_usuarios where usuario=@usuario;`;
+
+        try {
+            let pool = await sql.connect(databaseSqlServer)
+            respuesta = await pool.request()
+                .input('usuario', sql.VarChar(20), usuario)
+                .query(query);
+
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+
+        passwordBD = respuesta.recordset[0].clave;
+        userId = respuesta.recordset[0].id;
+
+        if (await helpers.matchPassword(passwordActual, passwordBD)) {
+            console.log("Contraseña correcta!");
+
+            if (passwordNuevo === passwordConfirmar) {
+                try {
+                    let respuesta = await GuardarNuevaClave(passwordNuevo, userId);
+                    if (respuesta) {
+                        msjOk = { msj: "Contraseña nueva actualizada!" };
+                        console.log("Contraseña nueva actualizada!");
+                    } else {
+                        msjError = { msj: "Ocurrio un error al actualizar contraseña, favor intente de nuevo." };
+                        console.log("Ocurrio un error al actualizar contraseña!");
+                    }
+                } catch (error) {
+                    msjError = { msj: "Ocurrio un error al actualizar contraseña, favor intente de nuevo." };
+                    console.log("Ocurrio un error al actualizar contraseña!");
+                }
+            } else {
+                msjError = { msj: "Las contraseñas nuevas no coinciden!" };
+                console.log("Contraseña actual incorrecta!");
+            }
+        } else {
+            msjError = { msj: "Contraseña actual incorrecta!" };
+            console.log("Contraseña actual incorrecta!");
+        }
+        res.render('cambiar-clave', { msjOk, msjError });
+
+    } else {
+        req.session.auth = false;
+        res.render('auth/signin');
+    }
+};
 //Funciones de apoyo
 let ObtenerDatosTalleres = async(req, res) => {
     let query = `select * from sgv_talleres;`;
@@ -453,6 +515,26 @@ let ObtenerDatosVehiculoPorId = async(id, req, res) => {
         return;
     }
     return vehiculo.recordset[0];
+}
+let GuardarNuevaClave = async(clave, userId, req, res) => {
+    console.log("Pass nuevo sin encriptar: ", clave);
+    clave = await helpers.encryptPassword(clave);
+    console.log("Pass nuevo: ", clave);
+    let query = `update sgv_usuarios set clave=@clave where id=@userId;`;
+
+    try {
+        let pool = await sql.connect(databaseSqlServer)
+        respuesta = await pool.request()
+            .input('clave', sql.VarChar(100), clave)
+            .input('userId', sql.VarChar(20), userId)
+            .query(query);
+
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+    console.log('Respuesta cambio clave: ', respuesta.rowsAffected[0]);
+    return true;
 }
 
 module.exports = ctrl;

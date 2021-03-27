@@ -28,6 +28,8 @@ router.post('/agregar-ubicacion', controller.postAgregarUbicacion);
 
 router.post('/agregar-taller', controller.postAgregarTaller);
 
+router.get('/cambiar-clave', controller.getCambiarClave);
 
+router.post('/cambiar-clave', controller.postCambiarClave);
 
 module.exports = router;
