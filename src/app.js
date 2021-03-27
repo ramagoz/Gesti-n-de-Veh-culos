@@ -30,7 +30,7 @@ app.use(session({
     secret: 'asd',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, maxAge: 60000 * 2 },
+    cookie: { secure: false, maxAge: 60000 * 30 },
 }));
 
 app.use(function(req, res, next) {
