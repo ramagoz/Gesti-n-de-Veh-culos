@@ -324,7 +324,7 @@ ctrl.getCambiarClave = async(req, res) => {
         res.render('cambiar-clave');
     } else {
         req.session.auth = false;
-        res.render('auth/signin');
+        res.redirect('/');
     }
 };
 ctrl.postCambiarClave = async(req, res) => {
