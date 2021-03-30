@@ -1,6 +1,6 @@
-/* body {
+body {
     overflow: hidden;
-} */
+}
 
 
 /* .index {
@@ -12,11 +12,13 @@
     background: #212529 !important;
 }
 
-.nav-link {
-    /* color: #fff !important; */
-}
 
-.masthead {
+/* .nav-link {
+    color: #fff !important;
+} */
+
+
+/* .masthead {
     color: white;
     min-height: 30rem;
     width: 100%;
@@ -27,7 +29,7 @@
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
-}
+} */
 
 .masthead h1 {
     font-size: 4rem;
