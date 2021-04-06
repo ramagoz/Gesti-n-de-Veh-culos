@@ -169,10 +169,10 @@ ctrl.postActualizarDatosVehiculo = async(req, res) => {
         let pool = await sql.connect(databaseSqlServer)
         respuesta = await pool.request()
             .input('chapa', sql.VarChar(50), chapa)
-            .input('idTaller', sql.Int, idTaller.id)
-            .input('idModelo', sql.Int, idModelo.id)
-            .input('idUbicacion', sql.Int, idUbicacion.id)
-            .input('idFormaPago', sql.Int, idFormaPago.id)
+            .input('idTaller', sql.Int, idTaller)
+            .input('idModelo', sql.Int, idModelo)
+            .input('idUbicacion', sql.Int, idUbicacion)
+            .input('idFormaPago', sql.Int, idFormaPago)
             .input('id', sql.BigInt, id)
             .query(query);
         await pool.close();
@@ -446,8 +446,12 @@ let ObtenerIdTaller = async(taller, req, res) => {
         console.log(error);
         return;
     }
-    id = id.recordset[0];
-    return id;
+    console.log(id);
+    if (id.rowsAffected[0] == 0) {
+        return null;
+    } else {
+        return id.recordset[0].id;
+    }
 }
 let ObtenerIdModelo = async(modelo, req, res) => {
     let query = `select id from sgv_modelos where modelo=@modelo;`;
@@ -461,8 +465,12 @@ let ObtenerIdModelo = async(modelo, req, res) => {
         console.log(error);
         return;
     }
-    id = id.recordset[0];
-    return id;
+
+    if (id.rowsAffected[0] == 0) {
+        return null;
+    } else {
+        return id.recordset[0].id;
+    }
 }
 let ObtenerIdUbicacion = async(ubicacion, req, res) => {
     let query = `select id from sgv_ubicaciones where ubi=@ubicacion;`;
@@ -476,8 +484,11 @@ let ObtenerIdUbicacion = async(ubicacion, req, res) => {
         console.log(error);
         return;
     }
-    id = id.recordset[0];
-    return id;
+    if (id.rowsAffected[0] == 0) {
+        return null;
+    } else {
+        return id.recordset[0].id;
+    }
 }
 let ObtenerIdFormaPago = async(formaPago, req, res) => {
     let query = `select id from sgv_formas_de_pagos where forma=@formaPago;`;
@@ -491,8 +502,11 @@ let ObtenerIdFormaPago = async(formaPago, req, res) => {
         console.log(error);
         return;
     }
-    id = id.recordset[0];
-    return id;
+    if (id.rowsAffected[0] == 0) {
+        return null;
+    } else {
+        return id.recordset[0].id;
+    }
 }
 let ObtenerDatosVehiculoPorId = async(id, req, res) => {
 
