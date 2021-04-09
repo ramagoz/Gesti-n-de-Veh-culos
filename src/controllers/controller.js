@@ -42,7 +42,7 @@ ctrl.postIndex = async(req, res) => {
             console.log("Contraseña correcta!");
             ssn.auth = true;
             console.log('Variable session: ', ssn.auth);
-            res.render('index');
+            res.redirect('/vehiculos');
         } else {
             let msjError = { msj: "Contraseña incorrecta!" };
             console.log("Contraseña incorrecta!");
