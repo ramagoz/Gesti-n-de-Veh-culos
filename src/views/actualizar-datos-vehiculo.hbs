@@ -34,7 +34,7 @@
     
     {{!-- Formulario Modelo Vehiculo --}}
     <div class="row" id="formulario-modelo" style="display: none;">
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8 mx-auto">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-6 mx-auto">
             <div class="card text-center my-3 mx-auto" id="registrar-cliente">
                 <h5 class="card-header">Registrar Modelo de Vehículo</h3>
                 <div class="card-body">
@@ -62,7 +62,7 @@
 
     {{!-- Formulario Forma de Pago --}}
     <div class="row" id="formulario-forma-pago" style="display: none;">
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8 mx-auto">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-6 mx-auto">
             <div class="card text-center my-3 mx-auto" id="registrar-cliente">
                 <h5 class="card-header">Registrar Forma de Pago</h3>
                 <div class="card-body">
@@ -90,7 +90,7 @@
 
     {{!-- Formulario Ubicación --}}
     <div class="row" id="formulario-ubicacion" style="display: none;">
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8 mx-auto">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-6 mx-auto">
             <div class="card text-center my-3 mx-auto" id="registrar-cliente">
                 <h5 class="card-header">Registrar Ubicación</h3>
                 <div class="card-body">
@@ -118,7 +118,7 @@
 
     {{!-- Formulario Taller Autorizado --}}
     <div class="row" id="formulario-taller" style="display: none;"> 
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8 mx-auto">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-6 mx-auto">
             <div class="card text-center my-3 mx-auto" id="registrar-cliente">
                 <h5 class="card-header">Registrar Taller Autorizado</h3>
                 <div class="card-body">
@@ -150,11 +150,11 @@
         <div class="form-row">
 
             <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label class="form-label">Chasis:</label>
+                <label class="form-label col-form-label-lg">Chasis:</label>
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control" value="{{ vehiculo.chasis }}" disabled>
+                <input class="form-control form-control-lg" value="{{ vehiculo.chasis }}" disabled>
             </div>
 
             <div class="form-group col-md-1">
@@ -162,11 +162,11 @@
             </div>
 
             <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label class="form-label">Descripción:</label>
+                <label class="form-label col-form-label-lg">Descripción:</label>
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control" value="{{ vehiculo.descripcion }}" disabled >
+                <input class="form-control form-control-lg" value="{{ vehiculo.descripcion }}" disabled >
             </div>
 
             <div class="form-group col-md-1">
@@ -179,22 +179,22 @@
         <div class="form-row">
 
             <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label class="form-label">Cliente:</label>
+                <label class="form-label col-form-label-lg">Cliente:</label>
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control" value="{{ vehiculo.cliente }}" disabled>
+                <input class="form-control form-control-lg" value="{{ vehiculo.cliente }}" disabled>
             </div>
 
             <div class="form-group col-md-1">
             </div>
 
             <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label for="exampleDataList" class="form-label">Fecha venta: </label>
+                <label for="exampleDataList" class="form-label col-form-label-lg">Fecha venta: </label>
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control" value="{{ vehiculo.fecha_vta }}" disabled>
+                <input class="form-control form-control-lg" value="{{ vehiculo.fecha_vta }}" disabled>
             </div>   
 
             <div class="form-group col-md-1">
@@ -205,22 +205,22 @@
         <div class="form-row">
 
             <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label class="form-label">Moneda:</label>
+                <label class="form-label col-form-label-lg">Moneda:</label>
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control" value="{{ vehiculo.moneda }}" disabled>
+                <input class="form-control form-control-lg" value="{{ vehiculo.moneda }}" disabled>
             </div>
 
             <div class="form-group col-md-1">
             </div>
 
             <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label class="form-label">Saldo:</label>
+                <label class="form-label col-form-label-lg">Saldo:</label>
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control" value="{{ vehiculo.saldo }}" disabled>
+                <input class="form-control form-control-lg" value="{{ vehiculo.saldo }}" disabled>
             </div>
 
             <div class="form-group col-md-1">
@@ -231,22 +231,22 @@
         <div class="form-row">
 
             <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label for="exampleDataList" class="form-label">Fecha importación:</label>
+                <label for="exampleDataList" class="form-label col-form-label-lg">Fecha importación:</label>
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control" value="{{ vehiculo.fecha_imp }}" disabled>
+                <input class="form-control form-control-lg" value="{{ vehiculo.fecha_imp }}" disabled>
             </div>   
 
             <div class="form-group col-md-1">
             </div> 
 
             <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label for="exampleDataList" class="form-label" >Chapa:</label>
+                <label for="exampleDataList" class="form-label col-form-label-lg" >Chapa:</label>
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control" value="{{ vehiculo.chapa }}" name="chapa">
+                <input class="form-control form-control-lg" value="{{ vehiculo.chapa }}" name="chapa">
             </div>   
 
             <div class="form-group col-md-1">
@@ -259,11 +259,11 @@
         <div class="form-row">
 
             <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label for="exampleDataList" class="form-label">Forma de pago: </label>
+                <label for="exampleDataList" class="form-label col-form-label-lg">Forma de pago: </label>
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input value="{{ vehiculo.forma }}" id="inputListFormaPago" class="form-control" list="listaFormasPago" placeholder="Escribe la forma de pago" name="formaPago">
+                <input value="{{ vehiculo.forma }}" id="inputListFormaPago" class="form-control form-control-lg" list="listaFormasPago" placeholder="Escribe la forma de pago" name="formaPago">
                 <datalist id="listaFormasPago">
                     {{#each formasPago}}
                         <option>{{ forma }}</option>
@@ -277,11 +277,11 @@
             </div>  
 
             <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label for="exampleDataList" class="form-label">Modelo:</label>
+                <label for="exampleDataList" class="form-label col-form-label-lg">Modelo:</label>
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input value="{{ vehiculo.modelo }}" id="inputListModelo" class="form-control" list="listaModelos" placeholder="Escribe el modelo" name="modelo">
+                <input value="{{ vehiculo.modelo }}" id="inputListModelo" class="form-control form-control-lg" list="listaModelos" placeholder="Escribe el modelo" name="modelo">
                 <datalist id="listaModelos">
                     {{#each modelos}}
                         <option>{{ modelo }}</option>
@@ -299,11 +299,11 @@
         <div class="form-row">
 
             <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label class="form-label">Ubicación:</label>
+                <label class="form-label col-form-label-lg">Ubicación:</label>
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input value="{{ vehiculo.ubi }}" id="inputListUbicacion" class="form-control" list="listaUbicaciones" placeholder="Escribe la ubicación" name="ubicacion">
+                <input value="{{ vehiculo.ubi }}" id="inputListUbicacion" class="form-control form-control-lg" list="listaUbicaciones" placeholder="Escribe la ubicación" name="ubicacion">
                 <datalist id="listaUbicaciones">
                     {{#each ubicaciones}}
                         <option>{{ ubi }}</option>
@@ -320,7 +320,7 @@
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input value="{{ vehiculo.taller }}" id="inputListTaller" class="form-control" list="listaTalleres" placeholder="Escribe el taller" name="taller">
+                <input value="{{ vehiculo.taller }}" id="inputListTaller" class="form-control form-control-lg" list="listaTalleres" placeholder="Escribe el taller" name="taller">
                 <datalist id="listaTalleres">
                     {{#each talleres}}
                         <option>{{ taller }}</option>
@@ -334,11 +334,11 @@
 
         </div>
 
-        <input class="form-control" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
+        <input class="form-control form-control-lg" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
 
         <div class="form-row justify-content-md-center my-5">
-            <button type="submit" class="btn btn-success mx-3 my-3">Guardar</button>
-            <a href="/vehiculos" class="btn btn-danger mx-3 my-3">Cancelar</a>
+            <button type="submit" class="btn btn-success btn-lg mx-3 my-3">Guardar</button>
+            <a href="/vehiculos" class="btn btn-danger btn-lg mx-3 my-3">Cancelar</a>
         </div>
     </form>
 </div>
