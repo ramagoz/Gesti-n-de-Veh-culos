@@ -33,24 +33,24 @@
     {{/if}}
     
     {{!-- Formulario Modelo Vehiculo --}}
-    <div class="row" id="formulario-modelo" style="display: none;">
+    <div class="row mb-4" id="formulario-modelo" style="display: none;">
         <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-6 mx-auto">
             <div class="card text-center my-3 mx-auto" id="registrar-cliente">
-                <h5 class="card-header">Registrar Modelo de Vehículo</h3>
+                <h5 class="card-header">Registrar modelo de vehículo</h5>
                 <div class="card-body">
                     <form action="/agregar-modelo" method="POST">
-                        <div class="row justify-content-md-center">
-                            <div class="form-group col-md-2">
-                                <label class="form-label" for="">Modelo:</label>
+                        <div class="row justify-content-center">
+                            <div class="form-group col-4">
+                                <label class="form-label form-control-lg" for="">Modelo:</label>
                             </div>
-                            <div class="form-group col-md-6">
-                                <input class="form-control" type="text" name="modelo" id="inputModelo" required>
+                            <div class="form-group col-6">
+                                <input class="form-control form-control-lg" type="text" name="modelo" id="inputModelo" required>
                             </div>
                         </div>
                         
                         <input class="form-control" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
 
-                        <div class="row justify-content-md-center mt-2">
+                        <div class="row justify-content-center mt-2">
                             <button type="submit" class="btn btn-primary mx-1">Confirmar</button>
                             <a href="#" onclick="cerrarFormularioModelo()" class="btn btn-danger mx-1">Cancelar</a>
                         </div>
@@ -61,24 +61,24 @@
     </div>
 
     {{!-- Formulario Forma de Pago --}}
-    <div class="row" id="formulario-forma-pago" style="display: none;">
+    <div class="row mb-4" id="formulario-forma-pago" style="display: none;">
         <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-6 mx-auto">
             <div class="card text-center my-3 mx-auto" id="registrar-cliente">
-                <h5 class="card-header">Registrar Forma de Pago</h3>
+                <h5 class="card-header">Registrar forma de pago</h3>
                 <div class="card-body">
                     <form action="/agregar-forma-pago" method="POST">
-                        <div class="row justify-content-md-center">
-                            <div class="form-group col-md-2">
-                                <label class="form-label" for="">Forma de Pago:</label>
+                        <div class="row justify-content-center">
+                            <div class="form-group col-4">
+                                <label class="form-label form-control-lg" for="">Forma de pago:</label>
                             </div>
-                            <div class="form-group col-md-6">
-                                <input class="form-control" type="text" name="formaPago" required id="inputFormaPago">
+                            <div class="form-group col-6">
+                                <input class="form-control form-control-lg" type="text" name="formaPago" required id="inputFormaPago">
                             </div>
                         </div>
                         
                         <input class="form-control" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
 
-                        <div class="row justify-content-md-center mt-2">
+                        <div class="row justify-content-center mt-2">
                             <button type="submit" class="btn btn-primary mx-1">Confirmar</button>
                             <a href="#" onclick="cerrarFormularioFormaPago()" class="btn btn-danger mx-1">Cancelar</a>
                         </div>
@@ -89,24 +89,24 @@
     </div>
 
     {{!-- Formulario Ubicación --}}
-    <div class="row" id="formulario-ubicacion" style="display: none;">
+    <div class="row mb-4" id="formulario-ubicacion" style="display: none;">
         <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-6 mx-auto">
             <div class="card text-center my-3 mx-auto" id="registrar-cliente">
-                <h5 class="card-header">Registrar Ubicación</h3>
+                <h5 class="card-header">Registrar ubicación</h3>
                 <div class="card-body">
                     <form action="/agregar-ubicacion" method="POST">
                         <div class="row justify-content-md-center">
-                            <div class="form-group col-md-2">
-                                <label class="form-label" for="">Ubicación:</label>
+                            <div class="form-group col-4">
+                                <label class="form-label form-control-lg" for="">Ubicación:</label>
                             </div>
-                            <div class="form-group col-md-6">
-                                <input class="form-control" type="text" name="ubicacion" required id="inputUbicacion">
+                            <div class="form-group col-6">
+                                <input class="form-control form-control-lg" type="text" name="ubicacion" required id="inputUbicacion">
                             </div>
                         </div>
                         
                         <input class="form-control" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
 
-                        <div class="row justify-content-md-center mt-2">
+                        <div class="row justify-content-center mt-2">
                             <button type="submit" class="btn btn-primary mx-1">Confirmar</button>
                             <a href="#" onclick="cerrarFormularioUbicacion()" class="btn btn-danger mx-1">Cancelar</a>
                         </div>
@@ -117,24 +117,24 @@
     </div>
 
     {{!-- Formulario Taller Autorizado --}}
-    <div class="row" id="formulario-taller" style="display: none;"> 
+    <div class="row mb-4" id="formulario-taller" style="display: none;"> 
         <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-6 mx-auto">
             <div class="card text-center my-3 mx-auto" id="registrar-cliente">
-                <h5 class="card-header">Registrar Taller Autorizado</h3>
+                <h5 class="card-header">Registrar taller autorizado</h3>
                 <div class="card-body">
                     <form action="/agregar-taller" method="POST">
                         <div class="row justify-content-md-center">
-                            <div class="form-group col-md-2">
-                                <label class="form-label" for="">Taller autorizado: </label>
+                            <div class="form-group col-4">
+                                <label class="form-label form-control-lg" for="">Taller autorizado: </label>
                             </div>
-                            <div class="form-group col-md-6">
-                                <input id="inputTaller" class="form-control" type="text" name="taller" required>
+                            <div class="form-group col-6">
+                                <input id="inputTaller" class="form-control form-control-lg" type="text" name="taller" required>
                             </div>
                         </div>
                         
                         <input class="form-control" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
 
-                        <div class="row justify-content-md-center mt-2">
+                        <div class="row justify-content-center mt-2">
                             <button type="submit" class="btn btn-primary mx-1">Confirmar</button>
                             <a href="#" onclick="cerrarFormularioTaller()" class="btn btn-danger mx-1">Cancelar</a>
                         </div>
@@ -246,7 +246,7 @@
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control form-control-lg" value="{{ vehiculo.chapa }}" name="chapa">
+                <input class="form-control form-control-lg" value="{{ vehiculo.chapa }}" name="chapa" placeholder="Escribe el nro. de chapa">
             </div>   
 
             <div class="form-group col-md-1">
@@ -273,7 +273,7 @@
             </div>   
 
             <div class="form-group col-md-1">
-                <a href="#" onclick="registrarFormaPago()"><i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
+                <a href="#" onclick="registrarFormaPago()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nueva forma de pago"><i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
             </div>  
 
             <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
@@ -290,7 +290,7 @@
             </div>   
 
             <div class="form-group col-md-1">
-                <a href="#" onclick="registrarModelo()"><i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
+                <a href="#" onclick="registrarModelo()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nuevo modelo"><i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
             </div>    
     
 
@@ -312,7 +312,7 @@
             </div>
 
             <div class="form-group col-md-1">
-                <a href="#" onclick="registrarUbicacion()"><i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
+                <a href="#" onclick="registrarUbicacion()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nueva ubicación"><i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
             </div>
 
             <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
@@ -329,7 +329,7 @@
             </div>   
 
             <div class="form-group col-md-1">
-                <a href="#" onclick="registrarTaller()"><i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
+                <a href="#" onclick="registrarTaller()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nuevo taller"><i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
             </div>     
 
         </div>

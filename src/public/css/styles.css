@@ -35,3 +35,7 @@
         height: 100vh;
     }
 } */
+
+div.dataTables_wrapper div.dataTables_filter input {
+    width: 300px;
+}
