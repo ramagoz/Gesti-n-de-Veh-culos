@@ -43,7 +43,7 @@ const ObtenerDatos = (async() => {
                 let q = `select count(*) as cant from sgv_vehiculos where id =${id};`;
                 let cantVehiculo = await sql.query(q);
 
-                //si no existe lo cargamos a la BD
+                //si el vehiculo no existe lo cargamos a la BD
                 if (cantVehiculo.recordset[0].cant === 0) {
 
                     console.log("No existe vehiculo");
@@ -198,4 +198,11 @@ const ObtenerDatos = (async() => {
     }
 });
 
-ObtenerDatos();
+var minutes = 1,
+    intervalo = minutes * 60 * 1000; //se encuentra en milisegundos
+
+//ejecutamos la actualizacion de la BD en intervalos de tiempo
+setInterval(function() {
+    console.log("Actualizando BD . . .");
+    ObtenerDatos();
+}, intervalo);
