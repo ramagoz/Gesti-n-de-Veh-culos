@@ -46,7 +46,7 @@ const ObtenerDatos = (async() => {
                 //si el vehiculo no existe lo cargamos a la BD
                 if (cantVehiculo.recordset[0].cant === 0) {
 
-                    console.log("No existe vehiculo");
+                    // console.log("No existe vehiculo");
 
                     chasis = '\'' + vehiculo[2] + '\'';
                     desc = '\'' + vehiculo[1] + '\'';
@@ -56,9 +56,9 @@ const ObtenerDatos = (async() => {
                     if (vehiculo[5] != null) {
 
                         cliente = vehiculo[5].split(' - ');
-                        console.log("Id cliente: ", cliente[0]);
+                        // console.log("Id cliente: ", cliente[0]);
                         id_cliente = cliente[0];
-                        console.log("Cliente: ", cliente[1]);
+                        // console.log("Cliente: ", cliente[1]);
 
                         try {
                             let q = `select count(*) as cant from sgv_clientes where id =${cliente[0]};`;
@@ -66,21 +66,21 @@ const ObtenerDatos = (async() => {
 
                             //si cliente no existe lo cargamos a la BD
                             if (cantidadClientes.recordset[0].cant == 0) {
-                                console.log("Cliente no existe");
+                                // console.log("Cliente no existe");
                                 let q = `insert into sgv_clientes (id, cliente) values(${cliente[0]},\'${cliente[1]}\');`;
 
                                 try {
                                     let r = await sql.query(q);
-                                    console.log(r);
+                                    // console.log(r);
                                 } catch (error) {
-                                    console.log("Error al insertar cliente");
+                                    // console.log("Error al insertar cliente");
                                 }
                             } else {
-                                console.log("Cliente existe");
+                                // console.log("Cliente existe");
                             }
 
                         } catch (error) {
-                            console.log("Error al obtener cantidad de cliente: ", error);
+                            // console.log("Error al obtener cantidad de cliente: ", error);
                         }
                     }
 
@@ -107,9 +107,9 @@ const ObtenerDatos = (async() => {
                     try {
                         let insert = `insert into sgv_vehiculos (id, chasis, descripcion, fecha_imp, fecha_vta, saldo, moneda, id_cliente) 
                         values (${id},${chasis},${desc},convert(datetime, ${fecha_imp}, 103),convert(datetime, ${fecha_vta}, 103),${saldo},${moneda},${id_cliente});`;
-                        console.log(insert);
+                        // console.log(insert);
                         let result = await sql.query(insert);
-                        console.log(result);
+                        // console.log(result);
                     } catch (err) {
                         console.log('Error al insertar vehiculo: ', err);
                     }
@@ -117,15 +117,15 @@ const ObtenerDatos = (async() => {
                     //si existe vehiculo actualizamos datos (chasis, saldo, fecha imp y fecha vta, id_cliente,moneda)
                 } else {
 
-                    console.log("Existe vehiculo");
+                    // console.log("Existe vehiculo");
 
                     //verificamos si hay un cliente asociado al vehiculo
                     if (vehiculo[5] != null) {
 
                         cliente = vehiculo[5].split(' - ');
-                        console.log("Id cliente: ", cliente[0]);
+                        // console.log("Id cliente: ", cliente[0]);
                         id_cliente = cliente[0];
-                        console.log("Cliente: ", cliente[1]);
+                        // console.log("Cliente: ", cliente[1]);
 
                         try {
                             let q = `select count(*) as cant from sgv_clientes where id =${cliente[0]};`;
@@ -133,17 +133,17 @@ const ObtenerDatos = (async() => {
 
                             //si cliente no existe lo cargamos a la BD
                             if (cantidadClientes.recordset[0].cant == 0) {
-                                console.log("Cliente no existe");
+                                // console.log("Cliente no existe");
                                 let q = `insert into sgv_clientes (id, cliente) values(${cliente[0]},\'${cliente[1]}\');`;
 
                                 try {
                                     let r = await sql.query(q);
-                                    console.log(r);
+                                    // console.log(r);
                                 } catch (error) {
                                     console.log("Error al insertar cliente");
                                 }
                             } else {
-                                console.log("Cliente existe");
+                                // console.log("Cliente existe");
                             }
 
                         } catch (error) {
@@ -198,11 +198,93 @@ const ObtenerDatos = (async() => {
     }
 });
 
+const ActualizarDatosRepuestos = (async() => {
+    let datosRepuestos = null;
+    try {
+        connection = await oracledb.getConnection(databaseOracle);
+        try {
+            datosRepuestos = await connection.execute(`SELECT ART_CODIGO, ART_COD_ALFANUMERICO, ART_DESC, EXIST from ADCS.STK_TD_FOTON_REPUESTOS`); //WHERE ART_CODIGO=54336100029485
+            connection.close();
+        } catch (error) {
+            console.log("Error al obtener datos de la BD Oracle: ", error);
+            connection.close();
+        }
+
+        datosRepuestos.rows.forEach(async(repuesto) => {
+            let pool = await sql.connect(databaseSqlServer)
+            let id = repuesto[0];
+            let cod_alfa = repuesto[1];
+            let desc = repuesto[2];
+            let exist = repuesto[3];
+
+            try {
+                let q = `select count(*) as cant from sgv_repuestos where id = id;`;
+
+                let r = await pool.request()
+                    .input('@id', sql.BigInt, id)
+                    .query(q);
+
+                //el repuesto no existe entonces lo cargamos a la BD
+                if (r.recordset[0].cant < 1) {
+                    try {
+                        let q = `insert into sgv_repuestos (id, cod_alfa, descripcion, exist) values
+                        (@id,@cod_alfa,@descripcion,@exist);`;
+
+                        let r = await pool.request()
+                            .input('id', sql.BigInt, id)
+                            .input('cod_alfa', sql.VarChar(50), cod_alfa)
+                            .input('descripcion', sql.VarChar(50), desc)
+                            .input('exist', sql.Int, exist)
+                            .query(q);
+
+                        // if (r.rowsAffected[0] == 1) {
+                        //     console.log("Producto insertado!");
+                        // }
+
+                    } catch (e) {
+                        console.log("Error al insertar datos!", e);
+                    }
+
+                } else { //el repuesto ya existe, entonces se actualiza la existencia del mismo
+                    try {
+                        let q = `update sgv_repuestos set exist = @exist where id= @id`;
+
+                        let r = await pool.request()
+                            .input('id', sql.BigInt, id)
+                            .input('exist', sql.Int, exist)
+                            .query(q);
+
+                        // if (r.rowsAffected[0] == 1) {
+                        //     console.log("Producto actualizado!");
+                        // }
+                    } catch (e) {
+                        console.log("Error al actualizar datos!", e);
+                    }
+                }
+
+            } catch (e) {
+                console.log("Error al consultar datos!", e);
+            }
+
+        });
+
+    } catch (error) {
+        console.log('Fallo de conexion a la BD: ', error);
+
+    }
+});
+
+
+//intervalo de ejecucion 
 var minutes = 1,
     intervalo = minutes * 60 * 1000; //se encuentra en milisegundos
 
 //ejecutamos la actualizacion de la BD en intervalos de tiempo
-setInterval(function() {
-    console.log("Actualizando BD . . .");
-    ObtenerDatos();
-}, intervalo);
+// setInterval(function() {
+//     console.log("Actualizando BD . . .");
+//     ObtenerDatos();
+//     ActualizarDatosRepuestos();
+// }, intervalo);
+
+ObtenerDatos();
+ActualizarDatosRepuestos();

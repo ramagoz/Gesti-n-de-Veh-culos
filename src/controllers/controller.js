@@ -67,7 +67,6 @@ ctrl.getVehiculos = async(req, res) => {
             vehiculos = await sql.query(`select v.chasis, v.chapa, c.cliente, v.descripcion, v.id
             from sgv_vehiculos v
             left join sgv_clientes c on c.id = v.id_cliente;`);
-            console.log(vehiculos.recordset);
 
         } catch (error) {
             console.log(error);
@@ -126,6 +125,153 @@ ctrl.getDatosVehiculo = async(req, res) => {
         req.session.auth = false;
         res.redirect('/');
     }
+}
+ctrl.getDetallesMantenimiento = async(req, res) => {
+    if (req.session.auth) {
+        id = req.params.id;
+        let vehiculo, repuestos, mantenimiento = '';
+
+        try {
+            idV = await ObtenerIdVehiculoPorIdMan(id);
+            vehiculo = await ObtenerDatosVehiculoPorId2(idV);
+            mantenimiento = await ObtenerMantenimientosPorIdMan(id);
+            repuestos = await ObtenerRepuestosPorIdMan(id);
+        } catch (error) {
+            console.log(error);
+        }
+        console.log('Re: ', repuestos);
+        res.render('detalles-mantenimiento', { idV, vehiculo, mantenimiento, repuestos });
+
+    } else {
+        req.session.auth = false;
+        res.redirect('/');
+    }
+}
+ctrl.getMantenimientosVehiculo = async(req, res) => {
+    if (req.session.auth) {
+        let id = req.params.id;
+        let vehiculo, repuesto, kms = '';
+        console.log(id);
+        try {
+            vehiculo = await ObtenerDatosVehiculoPorId2(id);
+            repuestos = await ObtenerRepuestos();
+            kms = await ObtenerKms();
+            mantenimientos = await ObtenerMantenimientos(id);
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+        console.log(vehiculo);
+        res.render('mantenimientos-vehiculo', { vehiculo, repuestos, kms, mantenimientos });
+
+    } else {
+        req.session.auth = false;
+        res.redirect('/');
+    }
+}
+ctrl.postRegistrarMantenimiento = async(req, res) => {
+
+    let { fecha, kmActual, kmRango, repuestos, cantidadRepuestos, obs, id } = req.body;
+    console.log(req.body);
+    let idMantenimiento = '',
+        vehiculo, repuesto, kms = '';
+
+    //insertamos registro de mantenimiento
+    try {
+        let query = `insert into sgv_mantenimientos (id_vehiculo, id_kms, km, fecha, obs) 
+        values(@id_vehiculo, @id_kms, @km, @fecha, @obs)`;
+
+        let pool = await sql.connect(databaseSqlServer)
+        respuesta = await pool.request()
+            .input('id_vehiculo', sql.BigInt, id)
+            .input('id_kms', sql.Int, kmRango)
+            .input('km', sql.Int, kmActual)
+            .input('fecha', sql.DateTime, fecha)
+            .input('obs', sql.VarChar(1000), obs)
+            .query(query);
+        await pool.close();
+        console.log(respuesta);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+
+    //obtenemos el id del mantenimiento
+    try {
+        query = `select top 1 id from sgv_mantenimientos order by id desc;`;
+
+        let pool = await sql.connect(databaseSqlServer)
+        idMantenimiento = await pool.request().query(query);
+        await pool.close();
+        console.log(respuesta);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+    idMantenimiento = idMantenimiento.recordset[0].id;
+
+    //registramos los repuestos utilizados en el mantenimiento
+    if (cantidadRepuestos.length == 1) {
+
+        try {
+            let query = `insert into sgv_repuestos_utilizados (id_mantenimiento, cod_alfa_repuesto, cantidad) 
+            values(@id_mantenimiento, @cod_alfa_repuesto, @cantidad)`;
+
+            let pool = await sql.connect(databaseSqlServer)
+            respuesta = await pool.request()
+                .input('id_mantenimiento', sql.Int, idMantenimiento)
+                .input('cod_alfa_repuesto', sql.VarChar(50), repuestos.split(' - Cod: ')[1])
+                .input('cantidad', sql.Int, cantidadRepuestos)
+                .query(query);
+            await pool.close();
+            console.log(respuesta);
+
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+
+    } else {
+
+        for (let i = 0; i < cantidadRepuestos.length; i++) {
+
+            try {
+                let query = `insert into sgv_repuestos_utilizados (id_mantenimiento, cod_alfa_repuesto, cantidad) 
+                values(@id_mantenimiento, @cod_alfa_repuesto, @cantidad)`;
+
+                let pool = await sql.connect(databaseSqlServer)
+                respuesta = await pool.request()
+                    .input('id_mantenimiento', sql.Int, idMantenimiento)
+                    .input('cod_alfa_repuesto', sql.VarChar(50), repuestos[i].split(' - Cod: ')[1])
+                    .input('cantidad', sql.Int, cantidadRepuestos[i])
+                    .query(query);
+                await pool.close();
+                console.log(respuesta);
+
+            } catch (error) {
+                console.log(error);
+                return;
+            }
+        }
+    }
+
+
+    //recuperamos datos para actualizar vista de mantenimientos
+    try {
+        vehiculo = await ObtenerDatosVehiculoPorId2(id);
+        repuestos = await ObtenerRepuestos();
+        kms = await ObtenerKms();
+        mantenimientos = await ObtenerMantenimientos(id);
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+
+    let msjOk = { msj: "Mantenimiento registrado correctamente! " };
+
+    res.render('mantenimientos-vehiculo', { vehiculo, repuestos, kms, msjOk, mantenimientos });
 }
 ctrl.getActualizarDatosVehiculo = async(req, res) => {
 
@@ -549,6 +695,112 @@ let GuardarNuevaClave = async(clave, userId, req, res) => {
     }
     console.log('Respuesta cambio clave: ', respuesta.rowsAffected[0]);
     return true;
+}
+let ObtenerDatosVehiculoPorId2 = async(id, req, res) => {
+
+    let vehiculo = '';
+    let query = `select v.id, v.chasis, v.descripcion, c.cliente
+     from sgv_vehiculos v
+     left join sgv_clientes c on c.id = v.id_cliente
+     where v.id = ${id};`;
+
+    try {
+        await sql.connect(databaseSqlServer);
+        vehiculo = await sql.query(query);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+    console.log(vehiculo);
+    return vehiculo.recordset[0];
+}
+let ObtenerKms = async() => {
+
+    try {
+        query = `select id, kms from sgv_kilometrajes;`;
+        await sql.connect(databaseSqlServer);
+        kms = await sql.query(query);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+    return kms.recordset;
+}
+let ObtenerMantenimientos = async(id) => {
+
+    try {
+        await sql.connect(databaseSqlServer);
+        query = `select m.id, m.km, k.kms,  format(m.fecha,\'dd-MM-yyyy\') as fecha from sgv_mantenimientos m
+        join sgv_kilometrajes k on k.id = m.id_kms where m.id_vehiculo = ${id} order by id desc;`;
+        mantenimientos = await sql.query(query);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+
+    return mantenimientos.recordset;
+}
+let ObtenerMantenimientosPorIdMan = async(id) => {
+
+    try {
+        await sql.connect(databaseSqlServer);
+        query = `select m.id, m.km, k.kms,  format(m.fecha,\'dd-MM-yyyy\') as fecha, obs from sgv_mantenimientos m
+        join sgv_kilometrajes k on k.id = m.id_kms where m.id = ${id} order by id desc;`;
+        mantenimientos = await sql.query(query);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+
+    return mantenimientos.recordset[0];
+}
+let ObtenerRepuestos = async() => {
+
+    try {
+        query = `select concat(descripcion,\' - Cod: \',cod_alfa) as repuesto from sgv_repuestos;`;
+        await sql.connect(databaseSqlServer);
+        repuestos = await sql.query(query);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+
+    return repuestos.recordset;
+}
+let ObtenerIdVehiculoPorIdMan = async(id) => {
+
+    try {
+        await sql.connect(databaseSqlServer);
+        query = `select id_vehiculo as id from sgv_mantenimientos where id = ${id};`;
+        idV = await sql.query(query);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+
+    return idV.recordset[0].id;
+}
+let ObtenerRepuestosPorIdMan = async(id) => {
+
+    try {
+        await sql.connect(databaseSqlServer);
+        query = `select r.descripcion, ru.cantidad from sgv_repuestos_utilizados ru
+        join sgv_repuestos r on r.cod_alfa = ru.cod_alfa_repuesto
+        where ru.id_mantenimiento = ${id};`;
+        repuestos = await sql.query(query);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+
+    return repuestos.recordset;
 }
 
 module.exports = ctrl;

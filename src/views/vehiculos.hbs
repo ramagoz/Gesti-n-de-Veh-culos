@@ -50,8 +50,9 @@
                     <td>{{ cliente }}</td>
                     <td>{{ descripcion }}</td>
                     <td align="center">
-                        <a href="/ver-datos-vehiculo/{{ id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver datos vehículo"> <i class="fa fa-truck fa-2x px-2" aria-hidden="true"></i> </a>
-                        <a href="/actualizar-datos-vehiculo/{{ id }}"  data-bs-toggle="tooltip" data-bs-placement="top" title="Actualizar datos vehículo"> <i class="fa fa-refresh fa-2x px-2" aria-hidden="true"></i> </a>
+                        <a href="/ver-datos-vehiculo/{{ id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver datos vehículo"> <i class="fa fa-truck fa-2x" aria-hidden="true"></i> </a>
+                        <a href="/actualizar-datos-vehiculo/{{ id }}"  data-bs-toggle="tooltip" data-bs-placement="top" title="Actualizar datos vehículo"> <i class="fa fa-refresh fa-2x px-1" aria-hidden="true"></i> </a>
+                        <a href="/mantenimientos-vehiculo/{{ id }}"  data-bs-toggle="tooltip" data-bs-placement="top" title="Mantenimiento vehículo"> <i class="fa fa-wrench fa-2x" aria-hidden="true"></i> </a>
                     </td>
                 </tr>
             {{/each}}

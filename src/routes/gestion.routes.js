@@ -16,6 +16,12 @@ router.get('/vehiculos-vendidos', controller.getVehiculosVendidos);
 
 router.get('/ver-datos-vehiculo/:id', controller.getDatosVehiculo);
 
+router.get('/mantenimientos-vehiculo/:id', controller.getMantenimientosVehiculo);
+
+router.post('/registrar-mantenimiento/', controller.postRegistrarMantenimiento);
+
+router.get('/detalles-mantenimiento/:id', controller.getDetallesMantenimiento);
+
 router.get('/actualizar-datos-vehiculo/:id', controller.getActualizarDatosVehiculo);
 
 router.post('/actualizar-datos-vehiculo', controller.postActualizarDatosVehiculo);

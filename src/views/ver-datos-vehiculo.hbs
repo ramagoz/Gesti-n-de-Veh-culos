@@ -1,7 +1,7 @@
 <script src="https://use.fontawesome.com/08f85aae79.js"></script>
 
 <div class="container-fluid mt-4" style="width:90%">
-    <div class="form-row justify-content-md-center my-5 mx-auto">
+    <div class="form-row justify-content-center my-5 mx-auto">
         <h1>Datos del vehículo</h1>
     </div>   
     {{#if msjError}}
@@ -191,9 +191,16 @@
 
     </div>
 
-    <div class="form-row justify-content-md-center my-5">
-        <a href="/actualizar-datos-vehiculo/{{ vehiculo.id}}" class="btn btn-success btn-lg mx-3">Actualizar datos</a>
-        <a href="/vehiculos" class="btn btn-warning btn-lg mx-3">Volver</a>
+    <div class="form-row justify-content-center my-3">
+        <div class="col-xl-2 col-lg-3 col-md-4 col-xs-11 col-sm-11 my-1">
+            <a href="/mantenimientos-vehiculo/{{ vehiculo.id}}" class="btn btn-secondary btn-block btn-lg mx-1">Ver mantenimientos</a>
+        </div>
+        <div class="col-xl-2 col-lg-3 col-md-4 col-xs-11 col-sm-11 my-1">
+            <a href="/actualizar-datos-vehiculo/{{ vehiculo.id}}" class="btn btn-success btn-block btn-lg mx-1">Actualizar datos</a>
+        </div>
+        <div class="col-xl-2 col-lg-3 col-md-4 col-xs-11 col-sm-11 my-1">
+            <a href="/vehiculos" class="btn btn-warning btn-block btn-lg mx-1">Volver</a>
+        </div>
     </div>
 
 </div>
