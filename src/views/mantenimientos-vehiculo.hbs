@@ -78,6 +78,7 @@
                                 <th scope="col">Fecha</th>
                                 <th scope="col">Km vehículo</th>
                                 <th scope="col">Rango km</th>
+                                <th scope="col">Ver</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -87,6 +88,7 @@
                                 <td>{{ fecha }}</td>
                                 <td>{{ km }}</td>
                                 <td>{{ kms }} </td>
+                                <td> <a href="/detalles-mantenimiento/{{ id }}"><i class="far fa-list-alt fa-2x"></i></a></td>
                             </tr>
                             {{/each}}
                         </tbody>
@@ -215,7 +217,14 @@
             language:{
                 url: "https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
             },
-            "aaSorting": [[ 0, "desc" ]]
+            "aaSorting": [[ 0, "desc" ]],
+            "columnDefs": [
+            {
+                "targets": [ 0 ],
+                "visible": false,
+                "searchable": false
+            }
+        ]
         });
     } );
 

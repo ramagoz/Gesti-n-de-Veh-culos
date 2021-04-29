@@ -2,7 +2,7 @@
     <header class="masthead d-flex">
       <div class="container">
         <div class="row justify-content-center align-items-center minh-100">
-          <div class="mx-auto col-xs-12 col-sm-8 col-md-8 col-lg-4 col-xl-4">
+          <div class="mx-auto col-xs-12 col-sm-8 col-md-8 col-lg-5 col-xl-5">
             {{#if msjError}}
               <div class="col-12">
                   <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -15,18 +15,24 @@
             {{/if}}
             <div class="card text-center border-primary">
               <div class="card-header">
-                <h4>Gestión de vehículos</h4>
+                <h2>Gestión de vehículos</h2>
               </div>
               <div class="card-body">
                 <form action="/" method="POST">
-                  <div class="form-group">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <i class="fas fa-user fa-2x input-group-text"></i>
+                    </div>
                     <input type="text" name="username" placeholder="Usuario" class="form-control form-control-lg" autofocus required>
                   </div>
-                  <div class="form-group">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <i class="fas fa-key fa-2x input-group-text"></i>
+                    </div>
                     <input type="password" name="password" placeholder="Contraseña" class="form-control form-control-lg" required>
                   </div>
-                  <button class="btn btn-outline-primary btn-block btn-lg">
-                    Ingresar
+                  <button class="btn btn-outline-primary btn-block btn-lg border-3">
+                    <h4>Ingresar</h4>
                   </button>
                 </form>
               </div>

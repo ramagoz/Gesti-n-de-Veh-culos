@@ -246,7 +246,7 @@
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control form-control-lg" value="{{ vehiculo.chapa }}" name="chapa" placeholder="Escribe el nro. de chapa">
+                <input class="form-control form-control-lg" value="{{ vehiculo.chapa }}" name="chapa" placeholder="Escriba el nro. de chapa">
             </div>   
 
             <div class="form-group col-md-1">
@@ -263,7 +263,7 @@
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input value="{{ vehiculo.forma }}" id="inputListFormaPago" class="form-control form-control-lg" list="listaFormasPago" placeholder="Escribe la forma de pago" name="formaPago">
+                <input value="{{ vehiculo.forma }}" id="inputListFormaPago" class="form-control form-control-lg" list="listaFormasPago" placeholder="Escriba la forma de pago" name="formaPago">
                 <datalist id="listaFormasPago">
                     {{#each formasPago}}
                         <option>{{ forma }}</option>
@@ -273,7 +273,7 @@
             </div>   
 
             <div class="form-group col-md-1">
-                <a href="#" onclick="registrarFormaPago()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nueva forma de pago"><i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
+                <a href="#" onclick="registrarFormaPago()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nueva forma de pago"><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a>
             </div>  
 
             <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
@@ -281,7 +281,7 @@
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input value="{{ vehiculo.modelo }}" id="inputListModelo" class="form-control form-control-lg" list="listaModelos" placeholder="Escribe el modelo" name="modelo">
+                <input value="{{ vehiculo.modelo }}" id="inputListModelo" class="form-control form-control-lg" list="listaModelos" placeholder="Escriba el modelo" name="modelo">
                 <datalist id="listaModelos">
                     {{#each modelos}}
                         <option>{{ modelo }}</option>
@@ -290,7 +290,7 @@
             </div>   
 
             <div class="form-group col-md-1">
-                <a href="#" onclick="registrarModelo()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nuevo modelo"><i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
+                <a href="#" onclick="registrarModelo()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nuevo modelo"><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a>
             </div>    
     
 
@@ -303,7 +303,7 @@
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input value="{{ vehiculo.ubi }}" id="inputListUbicacion" class="form-control form-control-lg" list="listaUbicaciones" placeholder="Escribe la ubicación" name="ubicacion">
+                <input value="{{ vehiculo.ubi }}" id="inputListUbicacion" class="form-control form-control-lg" list="listaUbicaciones" placeholder="Escriba la ubicación" name="ubicacion">
                 <datalist id="listaUbicaciones">
                     {{#each ubicaciones}}
                         <option>{{ ubi }}</option>
@@ -312,7 +312,7 @@
             </div>
 
             <div class="form-group col-md-1">
-                <a href="#" onclick="registrarUbicacion()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nueva ubicación"><i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
+                <a href="#" onclick="registrarUbicacion()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nueva ubicación"><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a>
             </div>
 
             <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
@@ -320,7 +320,7 @@
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input value="{{ vehiculo.taller }}" id="inputListTaller" class="form-control form-control-lg" list="listaTalleres" placeholder="Escribe el taller" name="taller">
+                <input value="{{ vehiculo.taller }}" id="inputListTaller" class="form-control form-control-lg" list="listaTalleres" placeholder="Escriba el taller" name="taller">
                 <datalist id="listaTalleres">
                     {{#each talleres}}
                         <option>{{ taller }}</option>
@@ -329,7 +329,7 @@
             </div>   
 
             <div class="form-group col-md-1">
-                <a href="#" onclick="registrarTaller()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nuevo taller"><i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i></a>
+                <a href="#" onclick="registrarTaller()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nuevo taller"><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a>
             </div>     
 
         </div>
