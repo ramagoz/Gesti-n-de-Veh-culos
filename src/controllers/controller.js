@@ -300,13 +300,9 @@ ctrl.postActualizarDatosVehiculo = async(req, res) => {
     console.log(req.body);
 
     let idTaller = await ObtenerIdTaller(taller);
-    console.log(idTaller);
     let idModelo = await ObtenerIdModelo(modelo);
-    console.log(idModelo);
     let idUbicacion = await ObtenerIdUbicacion(ubicacion);
-    console.log(idUbicacion);
     let idFormaPago = await ObtenerIdFormaPago(formaPago);
-    console.log(idFormaPago);
 
     let query = `update sgv_vehiculos set chapa=@chapa, id_taller=@idTaller, id_modelo=@idModelo,
       id_ubicacion=@idUbicacion, id_forma_pago=@idFormaPago where id=@id;`;
@@ -368,6 +364,7 @@ ctrl.postAgregarModelo = async(req, res) => {
 };
 ctrl.postAgregarFormaPago = async(req, res) => {
     const { id, formaPago } = req.body;
+    console.log(req.body);
     let respuesta, vehiculo = null;
     let query = `insert into sgv_formas_de_pagos (forma) values(@formaPago)`;
 
@@ -528,7 +525,7 @@ ctrl.postCambiarClave = async(req, res) => {
     }
 };
 //Funciones de apoyo
-let ObtenerDatosTalleres = async(req, res) => {
+let ObtenerDatosTalleres = async() => {
     let query = `select * from sgv_talleres;`;
     try {
         await sql.connect(databaseSqlServer);
@@ -541,7 +538,7 @@ let ObtenerDatosTalleres = async(req, res) => {
     talleres = talleres.recordset;
     return talleres;
 }
-let ObtenerDatosModelos = async(req, res) => {
+let ObtenerDatosModelos = async() => {
     let query = `select * from sgv_modelos;`;
     try {
         await sql.connect(databaseSqlServer);
@@ -554,7 +551,7 @@ let ObtenerDatosModelos = async(req, res) => {
     modelos = modelos.recordset;
     return modelos;
 }
-let ObtenerDatosFormasPago = async(req, res) => {
+let ObtenerDatosFormasPago = async() => {
     let query = `select * from sgv_formas_de_pagos;`;
     try {
         await sql.connect(databaseSqlServer);
@@ -567,7 +564,7 @@ let ObtenerDatosFormasPago = async(req, res) => {
     formaPago = formaPago.recordset;
     return formaPago;
 }
-let ObtenerDatosUbicaciones = async(req, res) => {
+let ObtenerDatosUbicaciones = async() => {
     let query = `select * from sgv_ubicaciones;`;
     try {
         await sql.connect(databaseSqlServer);
@@ -580,7 +577,7 @@ let ObtenerDatosUbicaciones = async(req, res) => {
     ubicaciones = ubicaciones.recordset;
     return ubicaciones;
 }
-let ObtenerIdTaller = async(taller, req, res) => {
+let ObtenerIdTaller = async(taller, ) => {
     let query = `select id from sgv_talleres where taller=@taller;`;
     try {
         let pool = await sql.connect(databaseSqlServer)
@@ -599,7 +596,7 @@ let ObtenerIdTaller = async(taller, req, res) => {
         return id.recordset[0].id;
     }
 }
-let ObtenerIdModelo = async(modelo, req, res) => {
+let ObtenerIdModelo = async(modelo, ) => {
     let query = `select id from sgv_modelos where modelo=@modelo;`;
     try {
         let pool = await sql.connect(databaseSqlServer)
@@ -618,7 +615,7 @@ let ObtenerIdModelo = async(modelo, req, res) => {
         return id.recordset[0].id;
     }
 }
-let ObtenerIdUbicacion = async(ubicacion, req, res) => {
+let ObtenerIdUbicacion = async(ubicacion, ) => {
     let query = `select id from sgv_ubicaciones where ubi=@ubicacion;`;
     try {
         let pool = await sql.connect(databaseSqlServer)
@@ -636,7 +633,7 @@ let ObtenerIdUbicacion = async(ubicacion, req, res) => {
         return id.recordset[0].id;
     }
 }
-let ObtenerIdFormaPago = async(formaPago, req, res) => {
+let ObtenerIdFormaPago = async(formaPago, ) => {
     let query = `select id from sgv_formas_de_pagos where forma=@formaPago;`;
     try {
         let pool = await sql.connect(databaseSqlServer)
@@ -654,7 +651,7 @@ let ObtenerIdFormaPago = async(formaPago, req, res) => {
         return id.recordset[0].id;
     }
 }
-let ObtenerDatosVehiculoPorId = async(id, req, res) => {
+let ObtenerDatosVehiculoPorId = async(id, ) => {
 
     let query = `select v.id, v.chasis, v.descripcion, format(v.fecha_imp,'dd-MM-yyyy') as fecha_imp, format(v.fecha_vta,'dd-MM-yyyy') as fecha_vta, v.saldo, v.moneda, c.cliente,
     u.ubi, t.taller, m.modelo, fp.forma, v.chapa, v.obs
@@ -676,7 +673,7 @@ let ObtenerDatosVehiculoPorId = async(id, req, res) => {
     }
     return vehiculo.recordset[0];
 }
-let GuardarNuevaClave = async(clave, userId, req, res) => {
+let GuardarNuevaClave = async(clave, userId, ) => {
     console.log("Pass nuevo sin encriptar: ", clave);
     clave = await helpers.encryptPassword(clave);
     console.log("Pass nuevo: ", clave);
@@ -696,7 +693,7 @@ let GuardarNuevaClave = async(clave, userId, req, res) => {
     console.log('Respuesta cambio clave: ', respuesta.rowsAffected[0]);
     return true;
 }
-let ObtenerDatosVehiculoPorId2 = async(id, req, res) => {
+let ObtenerDatosVehiculoPorId2 = async(id, ) => {
 
     let vehiculo = '';
     let query = `select v.id, v.chasis, v.descripcion, c.cliente

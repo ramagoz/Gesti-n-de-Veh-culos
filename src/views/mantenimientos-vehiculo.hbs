@@ -36,7 +36,7 @@
         {{!-- Seccion datos del vehiculo y mantenimientos realizados --}}
         <div class="col-md-12 col-lg-6 mb-4">
             {{!-- Datos del vehículo --}}
-            <div class="card mb-4">
+            <div class="card mb-4 border-primary shadow-lg">
                 <div class="card-header h4 text-center">
                     <h4>Datos del vehículo</h4>
                 </div>
@@ -66,7 +66,7 @@
             </div>
 
             {{!-- Listado de mantenimientos realizados --}}
-            <div class="card">
+            <div class="card border-primary shadow-lg">
                 <div class="card-header h4 text-center">
                     <h4>Mantenimientos realizados</h4>
                 </div>
@@ -78,7 +78,7 @@
                                 <th scope="col">Fecha</th>
                                 <th scope="col">Km vehículo</th>
                                 <th scope="col">Rango km</th>
-                                <th scope="col">Ver</th>
+                                <th scope="col" style="text-align: center;">Ver</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -88,7 +88,7 @@
                                 <td>{{ fecha }}</td>
                                 <td>{{ km }}</td>
                                 <td>{{ kms }} </td>
-                                <td> <a href="/detalles-mantenimiento/{{ id }}"><i class="far fa-list-alt fa-2x"></i></a></td>
+                                <td style="text-align: center;"><a href="/detalles-mantenimiento/{{ id }}"><i class="far fa-list-alt fa-2x"></i></a></td>
                             </tr>
                             {{/each}}
                         </tbody>
@@ -99,7 +99,7 @@
 
         {{!-- Formulario para registro de mantenimientos  --}}
         <div class="col-md-12 col-lg-6 mb-4">
-            <div class="card">
+            <div class="card border-primary shadow-lg">
                 <div class="card-header h4 text-center">
                     Registrar mantenimiento
                 </div>
@@ -112,7 +112,7 @@
                                 <label class="form-label form-control-lg" for="">Fecha:</label>
                             </div>
                             <div class="col-md-7">
-                                <input class="form-control form-control-lg" type="date" placeholder="Ingrese el Km actual" required name="fecha">
+                                <input class="form-control form-control-lg" type="date" required name="fecha">
                             </div>
                         </div>
 

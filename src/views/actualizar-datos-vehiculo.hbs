@@ -59,7 +59,6 @@
             </div>
         </div>
     </div>
-
     {{!-- Formulario Forma de Pago --}}
     <div class="row mb-4" id="formulario-forma-pago" style="display: none;">
         <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-6 mx-auto">
@@ -87,7 +86,6 @@
             </div>
         </div>
     </div>
-
     {{!-- Formulario Ubicación --}}
     <div class="row mb-4" id="formulario-ubicacion" style="display: none;">
         <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-6 mx-auto">
@@ -115,7 +113,6 @@
             </div>
         </div>
     </div>
-
     {{!-- Formulario Taller Autorizado --}}
     <div class="row mb-4" id="formulario-taller" style="display: none;"> 
         <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-6 mx-auto">
@@ -143,7 +140,7 @@
             </div>
         </div>
     </div>
-
+    {{!-- Formulario principal --}}
     <form action="/actualizar-datos-vehiculo" method="POST" autocomplete="off">
         
         {{!-- Chasis y Descripción --}}
@@ -333,9 +330,9 @@
             </div>     
 
         </div>
-
+        {{!-- Id vehiculo oculto --}}
         <input class="form-control form-control-lg" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
-
+        {{!-- Botones --}}
         <div class="form-row justify-content-center my-3">
             <div class="col-xl-2 col-lg-3 col-md-4 col-xs-11 col-sm-11">
                 <button type="submit" class="btn btn-block btn-success btn-lg mx-1 my-1">Guardar</button>
