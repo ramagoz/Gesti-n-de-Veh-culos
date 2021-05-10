@@ -286,5 +286,5 @@ var minutes = 1,
 //     ActualizarDatosRepuestos();
 // }, intervalo);
 
-ObtenerDatos();
+//ObtenerDatos();
 ActualizarDatosRepuestos();

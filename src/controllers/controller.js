@@ -17,7 +17,6 @@ ctrl.postIndex = async(req, res) => {
     const { username, password } = req.body;
     ssn = req.session;
     hash = await helpers.encryptPassword(password);
-    console.log("Pass: ", hash);
     let query = `select * from sgv_usuarios where usuario=@usuario;`;
 
     try {
@@ -32,20 +31,16 @@ ctrl.postIndex = async(req, res) => {
     }
 
     if (respuesta.recordset.length < 1) {
-        console.log("Usuario no encontrado");
         let msjError = { msj: "Usuario no existe!" };
         res.render('auth/signin', { msjError });
     } else {
         passwordBD = respuesta.recordset[0].clave;
         ssn.user = respuesta.recordset[0].usuario;
         if (await helpers.matchPassword(password, passwordBD)) {
-            console.log("Contraseña correcta!");
             ssn.auth = true;
-            console.log('Variable session: ', ssn.auth);
             res.redirect('/vehiculos');
         } else {
             let msjError = { msj: "Contraseña incorrecta!" };
-            console.log("Contraseña incorrecta!");
             res.render('auth/signin', { msjError });
         }
     }
@@ -76,8 +71,9 @@ ctrl.getVehiculos = async(req, res) => {
         }
 
         let check = false;
+        let check2 = false;
 
-        res.render('vehiculos', { vehiculos, check });
+        res.render('vehiculos', { vehiculos, check, check2 });
     } else {
         req.session.auth = false;
         res.redirect('/');
@@ -103,6 +99,33 @@ ctrl.getVehiculosVendidos = async(req, res) => {
         let check = true;
 
         res.render('vehiculos', { vehiculos, check });
+    } else {
+        req.session.auth = false;
+        res.redirect('/');
+    }
+
+};
+ctrl.getVehiculosNoVendidos = async(req, res) => {
+
+    if (req.session.auth) {
+        let vehiculos = "";
+
+        try {
+            await sql.connect(databaseSqlServer);
+            vehiculos = await sql.query(`select v.chasis, v.chapa, c.cliente, v.descripcion, v.id
+            from sgv_vehiculos v
+            left join sgv_clientes c on c.id = v.id_cliente
+			where c.cliente is null;`);
+        } catch (error) {
+            console.log(error);
+            let msj = { msj: "Ocurrio un error al recuperar datos." };
+            res.redirect('/', { msj });
+            return;
+        }
+
+        let check2 = true;
+
+        res.render('vehiculos', { vehiculos, check2 });
     } else {
         req.session.auth = false;
         res.redirect('/');
@@ -157,12 +180,13 @@ ctrl.getMantenimientosVehiculo = async(req, res) => {
             repuestos = await ObtenerRepuestos();
             kms = await ObtenerKms();
             mantenimientos = await ObtenerMantenimientos(id);
+            talleres = await ObtenerDatosTalleres();
         } catch (error) {
             console.log(error);
             return;
         }
         console.log(vehiculo);
-        res.render('mantenimientos-vehiculo', { vehiculo, repuestos, kms, mantenimientos });
+        res.render('mantenimientos-vehiculo', { vehiculo, repuestos, kms, mantenimientos, talleres });
 
     } else {
         req.session.auth = false;
@@ -171,15 +195,19 @@ ctrl.getMantenimientosVehiculo = async(req, res) => {
 }
 ctrl.postRegistrarMantenimiento = async(req, res) => {
 
-    let { fecha, kmActual, kmRango, repuestos, cantidadRepuestos, obs, id } = req.body;
+    let { fecha, kmActual, kmRango, repuestos, cantidadRepuestos, obs, id, taller } = req.body;
     console.log(req.body);
-    let idMantenimiento = '',
-        vehiculo, repuesto, kms = '';
+    let id_mantenimiento,
+        vehiculo, repuesto, kms, idTaller = '';
 
     //insertamos registro de mantenimiento
     try {
-        let query = `insert into sgv_mantenimientos (id_vehiculo, id_kms, km, fecha, obs) 
-        values(@id_vehiculo, @id_kms, @km, @fecha, @obs)`;
+        idTaller = await ObtenerIdTaller(taller);
+        console.log("Taller; ", taller);
+        console.log("id taller; ", idTaller);
+
+        let query = `insert into sgv_mantenimientos (id_vehiculo, id_kms, km, fecha, obs, id_taller) 
+        values(@id_vehiculo, @id_kms, @km, @fecha, @obs, @id_taller)`;
 
         let pool = await sql.connect(databaseSqlServer)
         respuesta = await pool.request()
@@ -188,6 +216,7 @@ ctrl.postRegistrarMantenimiento = async(req, res) => {
             .input('km', sql.Int, kmActual)
             .input('fecha', sql.DateTime, fecha)
             .input('obs', sql.VarChar(1000), obs)
+            .input('id_taller', sql.Int, idTaller)
             .query(query);
         await pool.close();
         console.log(respuesta);
@@ -257,13 +286,13 @@ ctrl.postRegistrarMantenimiento = async(req, res) => {
         }
     }
 
-
     //recuperamos datos para actualizar vista de mantenimientos
     try {
         vehiculo = await ObtenerDatosVehiculoPorId2(id);
         repuestos = await ObtenerRepuestos();
         kms = await ObtenerKms();
         mantenimientos = await ObtenerMantenimientos(id);
+        talleres = await ObtenerDatosTalleres();
     } catch (error) {
         console.log(error);
         return;
@@ -271,7 +300,7 @@ ctrl.postRegistrarMantenimiento = async(req, res) => {
 
     let msjOk = { msj: "Mantenimiento registrado correctamente! " };
 
-    res.render('mantenimientos-vehiculo', { vehiculo, repuestos, kms, msjOk, mantenimientos });
+    res.render('mantenimientos-vehiculo', { vehiculo, repuestos, kms, msjOk, mantenimientos, talleres });
 }
 ctrl.getActualizarDatosVehiculo = async(req, res) => {
 
@@ -299,34 +328,54 @@ ctrl.postActualizarDatosVehiculo = async(req, res) => {
     const { taller, modelo, ubicacion, formaPago, chapa, id } = req.body;
     console.log(req.body);
 
-    let idTaller = await ObtenerIdTaller(taller);
-    let idModelo = await ObtenerIdModelo(modelo);
-    let idUbicacion = await ObtenerIdUbicacion(ubicacion);
-    let idFormaPago = await ObtenerIdFormaPago(formaPago);
+    //verificamos si los campos a actualizar están vacios
+    if (chapa == '' & formaPago == '' & modelo == '' &
+        ubicacion == '' & taller == '') {
+        try {
+            vehiculo = await ObtenerDatosVehiculoPorId(id);
+            modelos = await ObtenerDatosModelos();
+            talleres = await ObtenerDatosTalleres();
+            formasPago = await ObtenerDatosFormasPago();
+            ubicaciones = await ObtenerDatosUbicaciones();
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+        let msjError = { msj: "Los campos a actualzar están vacios! " };
 
-    let query = `update sgv_vehiculos set chapa=@chapa, id_taller=@idTaller, id_modelo=@idModelo,
-      id_ubicacion=@idUbicacion, id_forma_pago=@idFormaPago where id=@id;`;
+        res.render('actualizar-datos-vehiculo', { vehiculo, modelos, talleres, formasPago, ubicaciones, msjError });
+    } else {
 
-    try {
-        let pool = await sql.connect(databaseSqlServer)
-        respuesta = await pool.request()
-            .input('chapa', sql.VarChar(50), chapa)
-            .input('idTaller', sql.Int, idTaller)
-            .input('idModelo', sql.Int, idModelo)
-            .input('idUbicacion', sql.Int, idUbicacion)
-            .input('idFormaPago', sql.Int, idFormaPago)
-            .input('id', sql.BigInt, id)
-            .query(query);
-        await pool.close();
-        console.log(respuesta);
-    } catch (error) {
-        console.log(error);
+        let idTaller = await ObtenerIdTaller(taller);
+        let idModelo = await ObtenerIdModelo(modelo);
+        let idUbicacion = await ObtenerIdUbicacion(ubicacion);
+        let idFormaPago = await ObtenerIdFormaPago(formaPago);
+
+        let query = `update sgv_vehiculos set chapa=@chapa, id_taller=@idTaller, id_modelo=@idModelo,
+          id_ubicacion=@idUbicacion, id_forma_pago=@idFormaPago where id=@id;`;
+
+        try {
+            let pool = await sql.connect(databaseSqlServer)
+            respuesta = await pool.request()
+                .input('chapa', sql.VarChar(50), chapa)
+                .input('idTaller', sql.Int, idTaller)
+                .input('idModelo', sql.Int, idModelo)
+                .input('idUbicacion', sql.Int, idUbicacion)
+                .input('idFormaPago', sql.Int, idFormaPago)
+                .input('id', sql.BigInt, id)
+                .query(query);
+            await pool.close();
+            console.log(respuesta);
+        } catch (error) {
+            console.log(error);
+        }
+
+        let vehiculo = await ObtenerDatosVehiculoPorId(id);
+        let msjOk = { msj: "Datos actualizados correctamente! " };
+
+        res.render('ver-datos-vehiculo', { vehiculo, msjOk });
     }
 
-    let vehiculo = await ObtenerDatosVehiculoPorId(id);
-    let msjOk = { msj: "Datos actualizados correctamente! " };
-
-    res.render('ver-datos-vehiculo', { vehiculo, msjOk });
 }
 ctrl.postAgregarModelo = async(req, res) => {
     const { id, modelo } = req.body;
@@ -645,6 +694,7 @@ let ObtenerIdFormaPago = async(formaPago, ) => {
         console.log(error);
         return;
     }
+    console.log('Forma de pago: ', id);
     if (id.rowsAffected[0] == 0) {
         return null;
     } else {
@@ -744,8 +794,11 @@ let ObtenerMantenimientosPorIdMan = async(id) => {
 
     try {
         await sql.connect(databaseSqlServer);
-        query = `select m.id, m.km, k.kms,  format(m.fecha,\'dd-MM-yyyy\') as fecha, obs from sgv_mantenimientos m
-        join sgv_kilometrajes k on k.id = m.id_kms where m.id = ${id} order by id desc;`;
+        query = `select m.id, m.km, k.kms,  format(m.fecha,\'dd-MM-yyyy\') as fecha, obs, t.taller 
+         from sgv_mantenimientos m
+         join sgv_kilometrajes k on k.id = m.id_kms
+         join sgv_talleres t on t.id = m.id_taller 
+         where m.id = ${id} order by id desc;`;
         mantenimientos = await sql.query(query);
 
     } catch (error) {

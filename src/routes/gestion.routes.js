@@ -14,6 +14,8 @@ router.get('/vehiculos', controller.getVehiculos);
 
 router.get('/vehiculos-vendidos', controller.getVehiculosVendidos);
 
+router.get('/vehiculos-no-vendidos', controller.getVehiculosNoVendidos);
+
 router.get('/ver-datos-vehiculo/:id', controller.getDatosVehiculo);
 
 router.get('/mantenimientos-vehiculo/:id', controller.getMantenimientosVehiculo);

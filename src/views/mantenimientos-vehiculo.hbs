@@ -122,7 +122,7 @@
                                 <label class="form-label form-control-lg" for="">Km actual:</label>
                             </div>
                             <div class="col-md-7">
-                                <input class="form-control form-control-lg" type="text" placeholder="Ingrese el Km actual" required name="kmActual">
+                                <input class="form-control form-control-lg" type="text" placeholder="Ingrese el Km actual" required name="kmActual" autocomplete="off">
                             </div>
                         </div>
 
@@ -138,6 +138,21 @@
                                         <option value="{{ id }}"> {{ kms}} </option>
                                     {{/each}}
                                 </select>
+                            </div>
+                        </div>
+
+                        {{!-- Taller del mantenimiento --}}
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label class="form-label form-control-lg" for="">Taller:</label>
+                            </div>
+                            <div class="col-md-7">
+                                <input  id="taller" class="form-control form-control-lg" list="listaTalleres" placeholder="Ingrese el taller" name="taller" autocomplete="off" required>
+                                <datalist id="listaTalleres">
+                                    {{#each talleres}}
+                                        <option>{{ taller }}</option>
+                                    {{/each}}
+                                </datalist>
                             </div>
                         </div>
                         

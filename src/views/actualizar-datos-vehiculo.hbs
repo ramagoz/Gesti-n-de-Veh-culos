@@ -6,7 +6,7 @@
     {{#if msjError}}
         <div class="container">
             <div class="row">
-                <div class="col-md-6 mx-auto">
+                <div class="col-md-8 mx-auto">
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         {{msjError.msj}}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -243,7 +243,7 @@
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control form-control-lg" value="{{ vehiculo.chapa }}" name="chapa" placeholder="Escriba el nro. de chapa">
+                <input class="form-control form-control-lg" value="{{ vehiculo.chapa }}" name="chapa" placeholder="Escriba el nro. de chapa" autocomplete="off">
             </div>   
 
             <div class="form-group col-md-1">
@@ -260,7 +260,7 @@
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input value="{{ vehiculo.forma }}" id="inputListFormaPago" class="form-control form-control-lg" list="listaFormasPago" placeholder="Escriba la forma de pago" name="formaPago">
+                <input value="{{ vehiculo.forma }}" id="inputListFormaPago" class="form-control form-control-lg" list="listaFormasPago" placeholder="Escriba la forma de pago" name="formaPago" autocomplete="off">
                 <datalist id="listaFormasPago">
                     {{#each formasPago}}
                         <option>{{ forma }}</option>
@@ -278,7 +278,7 @@
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input value="{{ vehiculo.modelo }}" id="inputListModelo" class="form-control form-control-lg" list="listaModelos" placeholder="Escriba el modelo" name="modelo">
+                <input value="{{ vehiculo.modelo }}" id="inputListModelo" class="form-control form-control-lg" list="listaModelos" placeholder="Escriba el modelo" name="modelo" autocomplete="off">
                 <datalist id="listaModelos">
                     {{#each modelos}}
                         <option>{{ modelo }}</option>
@@ -300,7 +300,7 @@
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input value="{{ vehiculo.ubi }}" id="inputListUbicacion" class="form-control form-control-lg" list="listaUbicaciones" placeholder="Escriba la ubicación" name="ubicacion">
+                <input value="{{ vehiculo.ubi }}" id="inputListUbicacion" class="form-control form-control-lg" list="listaUbicaciones" placeholder="Escriba la ubicación" name="ubicacion" autocomplete="off">
                 <datalist id="listaUbicaciones">
                     {{#each ubicaciones}}
                         <option>{{ ubi }}</option>
@@ -317,7 +317,7 @@
             </div>
 
             <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input value="{{ vehiculo.taller }}" id="inputListTaller" class="form-control form-control-lg" list="listaTalleres" placeholder="Escriba el taller" name="taller">
+                <input value="{{ vehiculo.taller }}" id="inputListTaller" class="form-control form-control-lg" list="listaTalleres" placeholder="Escriba el taller" name="taller" autocomplete="off">
                 <datalist id="listaTalleres">
                     {{#each talleres}}
                         <option>{{ taller }}</option>
