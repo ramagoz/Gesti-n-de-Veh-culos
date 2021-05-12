@@ -528,6 +528,28 @@ ctrl.postAgregarTaller = async(req, res) => {
     let msjOk = { msj: "Taller creado correctamente! " };
     res.render('actualizar-datos-vehiculo', { vehiculo, msjOk, modelos, talleres, formasPago, ubicaciones });
 };
+ctrl.getRepuestos = async(req, res) => {
+    if (req.session.auth) {
+
+        let query = `select cod_alfa, descripcion, exist from sgv_repuestos where exist is not null;`;
+
+        try {
+            await sql.connect(databaseSqlServer);
+            repuestos = await sql.query(query);
+
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+        repuestos = repuestos.recordset;
+
+        res.render('repuestos', { repuestos });
+
+    } else {
+        req.session.auth = false;
+        res.redirect('/');
+    }
+};
 ctrl.getAuditoria = async(req, res) => {
     if (req.session.auth) {
 

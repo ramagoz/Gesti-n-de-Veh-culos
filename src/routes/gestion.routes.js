@@ -36,6 +36,8 @@ router.post('/agregar-ubicacion', controller.postAgregarUbicacion);
 
 router.post('/agregar-taller', controller.postAgregarTaller);
 
+router.get('/repuestos', controller.getRepuestos);
+
 router.get('/auditoria', controller.getAuditoria);
 
 router.get('/cambiar-clave', controller.getCambiarClave);

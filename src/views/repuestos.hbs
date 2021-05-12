@@ -1,0 +1,42 @@
+<div class="container">
+    
+    <div class="row justify-content-center my-4">
+        <h1>Repuestos</h1>
+    </div>
+
+    <table class="table table-striped table-bordered hover myTable" id="myTable" style="width:100%">
+        <thead>
+            <tr>
+                <th scope="col">Código Alfanúmerico</th>
+                <th scope="col">Repuesto</th>
+                <th scope="col">Existencia</th>
+            </tr>
+        </thead>
+
+        <tbody >
+            {{#each repuestos }}
+                <tr>
+                    <td>{{ cod_alfa }}</td>
+                    <td>{{ descripcion }}</td>
+                    <td>{{ exist }}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+</div>
+
+<script src="/js/jquery.dataTables.min.js"></script>
+<script src="/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+            language:{
+                url: "https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+            },
+            scrollX:        true,
+            scrollCollapse: true
+        });
+    } );
+</script>
