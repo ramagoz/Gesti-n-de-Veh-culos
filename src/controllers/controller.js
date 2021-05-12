@@ -36,8 +36,11 @@ ctrl.postIndex = async(req, res) => {
     } else {
         passwordBD = respuesta.recordset[0].clave;
         ssn.user = respuesta.recordset[0].usuario;
+
         if (await helpers.matchPassword(password, passwordBD)) {
             ssn.auth = true;
+            ssn.idUser = respuesta.recordset[0].id;
+            ssn.idRol = respuesta.recordset[0].id_rol;
             res.redirect('/vehiculos');
         } else {
             let msjError = { msj: "Contraseña incorrecta!" };
@@ -219,7 +222,6 @@ ctrl.postRegistrarMantenimiento = async(req, res) => {
             .input('id_taller', sql.Int, idTaller)
             .query(query);
         await pool.close();
-        console.log(respuesta);
 
     } catch (error) {
         console.log(error);
@@ -233,7 +235,6 @@ ctrl.postRegistrarMantenimiento = async(req, res) => {
         let pool = await sql.connect(databaseSqlServer)
         idMantenimiento = await pool.request().query(query);
         await pool.close();
-        console.log(respuesta);
 
     } catch (error) {
         console.log(error);
@@ -255,7 +256,6 @@ ctrl.postRegistrarMantenimiento = async(req, res) => {
                 .input('cantidad', sql.Int, cantidadRepuestos)
                 .query(query);
             await pool.close();
-            console.log(respuesta);
 
         } catch (error) {
             console.log(error);
@@ -296,6 +296,14 @@ ctrl.postRegistrarMantenimiento = async(req, res) => {
     } catch (error) {
         console.log(error);
         return;
+    }
+
+    try {
+        msjAuditoria = 'Se ha registrado un mantenimiento del vehículo chasis ' + vehiculo.chasis;
+        console.log("Registrando auditoria");
+        await RegistrarAuditoria(req, msjAuditoria);
+    } catch (error) {
+        console.log(error);
     }
 
     let msjOk = { msj: "Mantenimiento registrado correctamente! " };
@@ -371,6 +379,15 @@ ctrl.postActualizarDatosVehiculo = async(req, res) => {
         }
 
         let vehiculo = await ObtenerDatosVehiculoPorId(id);
+
+        try {
+            msjAuditoria = 'Se ha actualizado datos del vehículo chasis ' + vehiculo.chasis;
+            console.log("Registrando auditoria");
+            await RegistrarAuditoria(req, msjAuditoria);
+        } catch (error) {
+            console.log(error);
+        }
+
         let msjOk = { msj: "Datos actualizados correctamente! " };
 
         res.render('ver-datos-vehiculo', { vehiculo, msjOk });
@@ -510,6 +527,31 @@ ctrl.postAgregarTaller = async(req, res) => {
     vehiculo = await ObtenerDatosVehiculoPorId(id);
     let msjOk = { msj: "Taller creado correctamente! " };
     res.render('actualizar-datos-vehiculo', { vehiculo, msjOk, modelos, talleres, formasPago, ubicaciones });
+};
+ctrl.getAuditoria = async(req, res) => {
+    if (req.session.auth) {
+
+        let query = `select a.id, format(a.fecha,\'dd-MM-yyyy HH:mm:ss\') as fecha, u.usuario, a.accion from sgv_auditoria a
+        join sgv_usuarios u on u.id = a.id_usuario;`;
+
+        try {
+            await sql.connect(databaseSqlServer);
+            auditoria = await sql.query(query);
+
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+        console.log(auditoria);
+
+        auditoria = auditoria.recordset;
+
+        res.render('auditoria', { auditoria });
+
+    } else {
+        req.session.auth = false;
+        res.redirect('/');
+    }
 };
 ctrl.getCambiarClave = async(req, res) => {
     if (req.session.auth) {
@@ -850,6 +892,26 @@ let ObtenerRepuestosPorIdMan = async(id) => {
         return;
     }
 
+    return repuestos.recordset;
+}
+let RegistrarAuditoria = async(req, accion) => {
+
+    try {
+        let pool = await sql.connect(databaseSqlServer);
+
+        query = `insert into sgv_auditoria (id_usuario, fecha, accion)
+        values (@id_usuario, getdate(), @accion);`;
+
+        respuesta = await pool.request()
+            .input('id_usuario', sql.Int, req.session.idUser)
+            .input('accion', sql.VarChar(500), accion)
+            .query(query);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+    console.log("Auditoria", respuesta);
     return repuestos.recordset;
 }
 

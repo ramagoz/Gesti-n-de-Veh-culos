@@ -18,7 +18,19 @@
                     </li> --}}
                 </ul>
                 <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
-                    <li class="nav-item px-5 ml-auto">
+                        {{#ifCond session.idRol '==' 1 }}
+                            <li class="nav-item px-2 ml-auto">
+                                <a class="nav-link active" aria-current="page" href="/auditoria"><h5>Auditoría</h5></a>
+                            </li>
+                        {{/ifCond}}
+                        {{#ifCond session.idRol '==' 2 }}
+                            <li class="nav-item px-2 ml-auto">
+                                <a class="nav-link active" aria-current="page" href="/auditoria"><h5>Auditoría</h5></a>
+                            </li>
+                        {{/ifCond}}
+
+
+                    <li class="nav-item px-2 ml-auto">
                         <a class="nav-link active" aria-current="page" href="/cambiar-clave"><h5>Cambiar contraseña</h5></a>
                     </li>
                     <li class="nav-item px-5 ml-auto">
