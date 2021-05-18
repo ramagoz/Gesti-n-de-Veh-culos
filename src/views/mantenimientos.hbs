@@ -1,0 +1,49 @@
+<div class="container">
+    
+    <div class="row justify-content-center my-4">
+        <h1>Mantenimientos</h1>
+    </div>
+
+    <table class="table table-striped table-bordered hover myTable" id="myTable" style="width:100%">
+        <thead>
+            <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Km</th>
+                <th scope="col">Rango Km</th>
+                <th scope="col">Taller</th>
+                <th scope="col" style="text-align: center;">Ver</th>
+            </tr>
+        </thead>
+
+        <tbody >
+            {{#each mantenimientos }}
+                <tr>
+                    <td>{{ fecha }}</td>
+                    <td>{{ cliente }}</td>
+                    <td>{{ km }}</td>
+                    <td>{{ kms }}</td>
+                    <td>{{ taller }}</td>
+                    <td style="text-align: center;"><a href="/detalles-mantenimientos/{{ id }}"><i class="far fa-list-alt fa-2x"></i></a></td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+</div>
+
+<script src="/js/jquery.dataTables.min.js"></script>
+<script src="/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+            language:{
+                url: "https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+            },
+            scrollX:        true,
+            scrollCollapse: true,
+            "aaSorting": [[ 0, "desc" ]],
+        });
+    } );
+</script>

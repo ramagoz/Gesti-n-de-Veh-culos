@@ -24,6 +24,8 @@ router.post('/registrar-mantenimiento/', controller.postRegistrarMantenimiento);
 
 router.get('/detalles-mantenimiento/:id', controller.getDetallesMantenimiento);
 
+router.get('/detalles-mantenimientos/:id', controller.getDetallesMantenimientos);
+
 router.get('/actualizar-datos-vehiculo/:id', controller.getActualizarDatosVehiculo);
 
 router.post('/actualizar-datos-vehiculo', controller.postActualizarDatosVehiculo);
@@ -37,6 +39,8 @@ router.post('/agregar-ubicacion', controller.postAgregarUbicacion);
 router.post('/agregar-taller', controller.postAgregarTaller);
 
 router.get('/repuestos', controller.getRepuestos);
+
+router.get('/mantenimientos', controller.getMantenimientos);
 
 router.get('/auditoria', controller.getAuditoria);
 

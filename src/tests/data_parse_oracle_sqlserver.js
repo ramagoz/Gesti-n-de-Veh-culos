@@ -10,6 +10,7 @@ const ObtenerDatos = (async() => {
         connection = await oracledb.getConnection(databaseOracle);
 
         try {
+            console.log("Actualizando datos de vehículos. . .");
             datosVehiculos = await connection.execute(`SELECT ART_CODIGO, ART_DESC, ART_COD_ALFANUMERICO, EXIST, TO_CHAR(FECHA_LLEGADA_IMPORT, 'YYYYMMDD') AS FECHA_LLEGADA_IMPORT, CLIENTE,
             TO_CHAR(FECHA_VTA, 'DD-MM-YYYY') AS FECHA_VTA, DET_CANT, DOC_SALDO_MON, MON_DESC
                 from ADCS.STK_TD_FOTON_AUTOMOVILES `);
@@ -180,7 +181,7 @@ const ObtenerDatos = (async() => {
 
                         console.log(update);
                         let result = await sql.query(update);
-                        console.log(result);
+                        // console.log(result);
                     } catch (err) {
                         console.log('Error al actualizar datos de vehiculo: ', err);
                     }
@@ -203,6 +204,8 @@ const ActualizarDatosRepuestos = (async() => {
     try {
         connection = await oracledb.getConnection(databaseOracle);
         try {
+            console.log("Actualizando respuestos. . .");
+            console.log(new Date());
             datosRepuestos = await connection.execute(`SELECT ART_CODIGO, ART_COD_ALFANUMERICO, ART_DESC, EXIST from ADCS.STK_TD_FOTON_REPUESTOS`); //WHERE ART_CODIGO=54336100029485
             connection.close();
         } catch (error) {
@@ -282,9 +285,17 @@ var minutes = 1,
 //ejecutamos la actualizacion de la BD en intervalos de tiempo
 // setInterval(function() {
 //     console.log("Actualizando BD . . .");
-//     ObtenerDatos();
+//     // ObtenerDatos();
 //     ActualizarDatosRepuestos();
 // }, intervalo);
 
 ObtenerDatos();
 ActualizarDatosRepuestos();
+// console.log(getDate(new Date()));
+
+// function getDate(date) {
+//     var fecha = date.getDate() + '-' +
+//         (date.getMonth() + 1) + '-' + date.getFullYear();
+//     var hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+//     return fecha + ' ' + hora;
+// }

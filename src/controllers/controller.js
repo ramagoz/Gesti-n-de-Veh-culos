@@ -173,6 +173,27 @@ ctrl.getDetallesMantenimiento = async(req, res) => {
         res.redirect('/');
     }
 }
+ctrl.getDetallesMantenimientos = async(req, res) => {
+    if (req.session.auth) {
+        id = req.params.id;
+        let vehiculo, repuestos, mantenimiento = '';
+
+        try {
+            idV = await ObtenerIdVehiculoPorIdMan(id);
+            vehiculo = await ObtenerDatosVehiculoPorId2(idV);
+            mantenimiento = await ObtenerMantenimientosPorIdMan(id);
+            repuestos = await ObtenerRepuestosPorIdMan(id);
+        } catch (error) {
+            console.log(error);
+        }
+        console.log('Re: ', repuestos);
+        res.render('detalles-mantenimientos', { idV, vehiculo, mantenimiento, repuestos });
+
+    } else {
+        req.session.auth = false;
+        res.redirect('/');
+    }
+}
 ctrl.getMantenimientosVehiculo = async(req, res) => {
     if (req.session.auth) {
         let id = req.params.id;
@@ -544,6 +565,32 @@ ctrl.getRepuestos = async(req, res) => {
         repuestos = repuestos.recordset;
 
         res.render('repuestos', { repuestos });
+
+    } else {
+        req.session.auth = false;
+        res.redirect('/');
+    }
+};
+ctrl.getMantenimientos = async(req, res) => {
+    if (req.session.auth) {
+
+        let query = `select m.id, format(m.fecha,\'dd-MM-yyyy\') as fecha, c.cliente, m.km, k.kms, t.taller from sgv_mantenimientos m
+        join sgv_vehiculos v on v.id = m.id_vehiculo
+        join sgv_kilometrajes k on k.id = m.id_kms
+        left join sgv_clientes c on v.id_cliente = c.id
+        join sgv_talleres t on t.id = m.id_taller;`;
+
+        try {
+            await sql.connect(databaseSqlServer);
+            mantenimientos = await sql.query(query);
+
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+        mantenimientos = mantenimientos.recordset;
+
+        res.render('mantenimientos', { mantenimientos });
 
     } else {
         req.session.auth = false;
@@ -936,5 +983,7 @@ let RegistrarAuditoria = async(req, accion) => {
     console.log("Auditoria", respuesta);
     return repuestos.recordset;
 }
+
+
 
 module.exports = ctrl;
