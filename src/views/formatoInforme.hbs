@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <hr>
+        <div class="card">
+            <div class="card-body">
+                {{!-- Seccion cabecera informe --}}
+                <h3 style="text-align: center;">Fecha del informe</h3>
+                <p>
+                    <strong>Actual:</strong> {{ hoy }}
+                </p>
+                <p>
+                    <strong>Desde:</strong> {{ desde }}
+                </p>
+                <p>
+                    <strong>Hasta:</strong> {{ hasta }}
+                </p>
+                
+                <hr>
+                {{!-- Seccion mantenimientos --}}
+                <section>
+                    <h3 style="text-align: center;">Mantenimientos</h3>
+                    <p>
+                        <strong>Realizados:</strong> {{ cantMant }}
+                    </p>
+
+                    <table  class="table table-striped table-bordered hover myTable" id="myTable" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Km</th>
+                                <th scope="col">Rango Km</th>
+                                <th scope="col">Taller</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            {{#each mantenimientos }}
+                                <tr>
+                                    <td>{{ fecha }}</td>
+                                    <td>{{ cliente }}</td>
+                                    <td>{{ km }}</td>
+                                    <td>{{ kms }}</td>
+                                    <td>{{ taller }}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </section>
+
+                <hr>
+
+                {{!-- Seccion repuestos --}}
+                <section>
+                    <h3 style="text-align: center;">Repuestos</h3>
+                    <p>
+                        <strong>Utilizados:</strong> {{ cantRep }}
+                    </p>
+                    <table class="table table-striped table-bordered hover myTable" id="myTable" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th scope="col">Código Alfanúmerico</th>
+                                <th scope="col">Repuesto</th>
+                                <th scope="col">Cantidad utilizada</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            {{#each repuestos }}
+                                <tr>
+                                    <td>{{ cod_alfa }}</td>
+                                    <td>{{ descripcion }}</td>
+                                    <td>{{ cant }}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </section>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

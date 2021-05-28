@@ -597,6 +597,92 @@ ctrl.getMantenimientos = async(req, res) => {
         res.redirect('/');
     }
 };
+ctrl.getInformes = async(req, res) => {
+    if (req.session.auth) {
+        res.render('informes');
+    } else {
+        req.session.auth = false;
+        res.redirect('/');
+    }
+}
+ctrl.postGenerarInforme = async(req, res) => {
+    if (req.session.auth) {
+        let { desde, hasta } = req.body;
+        let cantMant;
+        console.log("Desde: " + desde + " Hasta: " + hasta);
+        var pdf = require("pdf-creator-node");
+        var fs = require("fs");
+
+        //template del informe
+        var html = fs.readFileSync('./src/views/formatoInforme.hbs', 'utf8');
+        //datos para el informe
+        try {
+            cantMant = await ObtenerCantMant(desde, hasta);
+            mantenimientos = await ObtenerMantPorFecha(desde, hasta);
+            cantRep = await ObtenerCantRepUtilizados(desde, hasta);
+            repuestos = await ObtenerRepPorFecha(desde, hasta);
+        } catch (error) {
+            console.log(error);
+        }
+
+        //opciones de configuracion de pagina
+        var options = {
+            format: "A4",
+            orientation: "portrait",
+            border: "10mm",
+            header: {
+                height: "15mm",
+                contents: '<div style="text-align: center;"><h2>Informe - Sistema de Gestión de vehículos</h2></div>'
+            },
+            footer: {
+                height: "18mm",
+                contents: {
+                    // first: 'Pág. 1 - {{page}}',
+                    // 2: 'Pág. 2',
+                    default: '<span style="color: #444;text-align: center;">{{page}}</span>/<span>{{pages}}</span>',
+                    // last: 'Ultima Página'
+                }
+            }
+        };
+        //definicion del template, datos y formato del documento
+        var document = {
+            html: html,
+            data: {
+                hoy: getDate(new Date()),
+                desde: formatDate(new Date(desde)),
+                hasta: formatDate(new Date(hasta)),
+                cantMant,
+                mantenimientos,
+                cantRep,
+                repuestos
+            },
+            //path: "./resultado.pdf",
+            type: "stream",
+        };
+        //creacion del informe en pdf
+        pdf
+            .create(document, options)
+            .then((stream) => {
+                stream.pipe(res);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    } else {
+        req.session.auth = false;
+        res.redirect('/');
+    }
+
+}
+ctrl.verInforme = async(req, res) => {
+
+    try {
+        //let repuestos = await ObtenerRepuestos();
+    } catch (error) {
+        console.log(error);
+    }
+    res.render('informe');
+}
 ctrl.getAuditoria = async(req, res) => {
     if (req.session.auth) {
 
@@ -982,6 +1068,107 @@ let RegistrarAuditoria = async(req, accion) => {
     }
     console.log("Auditoria", respuesta);
     return repuestos.recordset;
+}
+let ObtenerCantMant = async(desde, hasta) => {
+    try {
+        let pool = await sql.connect(databaseSqlServer);
+
+        query = `SELECT count(*) as cant 
+        FROM sgv_mantenimientos
+        where fecha BETWEEN @desde and @hasta; `;
+
+        cant = await pool.request()
+            .input('desde', sql.VarChar(10), desde)
+            .input('hasta', sql.VarChar(10), hasta)
+            .query(query);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+    console.log("Cantidad: ", cant.recordset[0]);
+    return cant.recordset[0].cant;
+}
+let ObtenerMantPorFecha = async(desde, hasta) => {
+
+    let query = `select m.id, format(m.fecha,\'dd-MM-yyyy\') as fecha, c.cliente, m.km, k.kms, t.taller 
+        from sgv_mantenimientos m
+        join sgv_vehiculos v on v.id = m.id_vehiculo
+        join sgv_kilometrajes k on k.id = m.id_kms
+        left join sgv_clientes c on v.id_cliente = c.id
+        join sgv_talleres t on t.id = m.id_taller
+        where m.fecha BETWEEN @desde and @hasta;`;
+
+    try {
+        let pool = await sql.connect(databaseSqlServer);
+        mantenimientos = await pool.request()
+            .input('desde', sql.VarChar(10), desde)
+            .input('hasta', sql.VarChar(10), hasta)
+            .query(query);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+
+    return mantenimientos.recordset;
+}
+let ObtenerCantRepUtilizados = async(desde, hasta) => {
+    try {
+        let pool = await sql.connect(databaseSqlServer);
+
+        query = `SELECT sum(ru.cantidad) as cant 
+        FROM sgv_mantenimientos m
+        join sgv_repuestos_utilizados ru on ru.id_mantenimiento = m.id
+        where fecha BETWEEN @desde and @hasta; `;
+
+        cant = await pool.request()
+            .input('desde', sql.VarChar(10), desde)
+            .input('hasta', sql.VarChar(10), hasta)
+            .query(query);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+    console.log("Cantidad: ", cant.recordset[0]);
+    return cant.recordset[0].cant;
+}
+let ObtenerRepPorFecha = async(desde, hasta) => {
+
+    let query = `SELECT r.cod_alfa, r.descripcion, sum(ru.cantidad) as cant
+    FROM sgv_mantenimientos m
+    join sgv_repuestos_utilizados ru on ru.id_mantenimiento = m.id
+    join sgv_repuestos r on r.cod_alfa = ru.cod_alfa_repuesto
+    where m.fecha BETWEEN @desde and @hasta
+    group by r.cod_alfa, r.descripcion;`;
+
+    try {
+        let pool = await sql.connect(databaseSqlServer);
+        repuestos = await pool.request()
+            .input('desde', sql.VarChar(10), desde)
+            .input('hasta', sql.VarChar(10), hasta)
+            .query(query);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+
+    return repuestos.recordset;
+}
+
+function getDate(date) {
+    var fecha = date.getDate() + '-' +
+        (date.getMonth() + 1) + '-' + date.getFullYear();
+    var hora = date.getHours() + ':' + date.getMinutes();
+    return fecha + ' ' + hora;
+}
+
+function formatDate(date) {
+    var fecha = date.getDate() + '-' +
+        (date.getMonth() + 1) + '-' + date.getFullYear();
+    return fecha;
 }
 
 

@@ -1,6 +1,11 @@
 
 
 <div class="container">
+    
+<div class="row justify-content-center mt-5">
+    <h1>Cambiar Contraseña</h1>
+</div>
+
   <div class="row justify-content-center align-items-center minh-100">
     <div class="mx-auto col-xs-12 col-sm-8 col-md-8 col-lg-4 col-xl-4">
         {{#if msjError}}
@@ -23,10 +28,7 @@
                 </div>
             </div>
         {{/if}}
-        <div class="card text-center border-primary shadow-lg">
-            <div class="card-header">
-                <h4>Cambiar Contraseña</h4>
-            </div>
+        <div class="card text-center border-primary shadow-lg p-4">
             <div class="card-body">
                 <form action="/cambiar-clave" method="POST">
                 <div class="form-group">

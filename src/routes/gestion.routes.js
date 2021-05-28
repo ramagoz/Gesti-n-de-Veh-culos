@@ -42,6 +42,12 @@ router.get('/repuestos', controller.getRepuestos);
 
 router.get('/mantenimientos', controller.getMantenimientos);
 
+router.get('/informes', controller.getInformes);
+
+router.post('/generar-informe/', controller.postGenerarInforme);
+
+router.get('/ver-informe/', controller.verInforme);
+
 router.get('/auditoria', controller.getAuditoria);
 
 router.get('/cambiar-clave', controller.getCambiarClave);
