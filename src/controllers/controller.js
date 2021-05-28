@@ -629,13 +629,13 @@ ctrl.postGenerarInforme = async(req, res) => {
         var options = {
             format: "A4",
             orientation: "portrait",
-            border: "10mm",
+            border: "5mm",
             header: {
-                height: "15mm",
-                contents: '<div style="text-align: center;"><h2>Informe - Sistema de Gestión de vehículos</h2></div>'
+                height: "10mm",
+                contents: '<div style="text-align: center;"><h3>Informe - Sistema de Gestión de vehículos</h3></div>'
             },
             footer: {
-                height: "18mm",
+                height: "10mm",
                 contents: {
                     // first: 'Pág. 1 - {{page}}',
                     // 2: 'Pág. 2',
