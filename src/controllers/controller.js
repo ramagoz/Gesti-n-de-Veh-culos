@@ -620,6 +620,9 @@ ctrl.postGenerarInforme = async(req, res) => {
             cantMant = await ObtenerCantMant(desde, hasta);
             mantenimientos = await ObtenerMantPorFecha(desde, hasta);
             cantRep = await ObtenerCantRepUtilizados(desde, hasta);
+            if (cantRep == null) {
+                cantRep = 0;
+            }
             repuestos = await ObtenerRepPorFecha(desde, hasta);
         } catch (error) {
             console.log(error);
@@ -632,7 +635,7 @@ ctrl.postGenerarInforme = async(req, res) => {
             border: "5mm",
             header: {
                 height: "10mm",
-                contents: '<div style="text-align: center;"><h3>Informe - Sistema de Gestión de vehículos</h3></div>'
+                contents: '<div style="text-align: center;"><h3>Informe - Sistema Gestión de vehículos</h3></div>'
             },
             footer: {
                 height: "10mm",
@@ -649,8 +652,8 @@ ctrl.postGenerarInforme = async(req, res) => {
             html: html,
             data: {
                 hoy: getDate(new Date()),
-                desde: formatDate(new Date(desde)),
-                hasta: formatDate(new Date(hasta)),
+                desde: formatDate(desde),
+                hasta: formatDate(hasta),
                 cantMant,
                 mantenimientos,
                 cantRep,
@@ -1166,8 +1169,10 @@ function getDate(date) {
 }
 
 function formatDate(date) {
-    var fecha = date.getDate() + '-' +
-        (date.getMonth() + 1) + '-' + date.getFullYear();
+    var fecha = date.split('-');
+    fecha = new Date(fecha[0], fecha[1] - 1, fecha[2]);
+    fecha = fecha.getDate() + '-' +
+        (fecha.getMonth() + 1) + '-' + fecha.getFullYear();
     return fecha;
 }
 
