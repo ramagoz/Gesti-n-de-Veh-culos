@@ -1,5 +1,5 @@
-<div class="container-fluid mt-2" style="width: 95%;">
-    <div class="form-row justify-content-md-center my-3 mx-auto">
+<div class="container-fluid mb-5" style="width: 95%;">
+    <div class="form-row justify-content-md-center pt-4 mx-auto">
         <h1>Mantenimientos del vehículo</h1>
     </div> 
     {{#if msjError}}
@@ -43,19 +43,19 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-2">
-                            <label class="form-label form-control-lg" for="">Cliente</label>
+                            <label class="form-label form-control-lg" for="">Cliente:</label>
                         </div>
                         <div class="col-md-10">
                             <input class="form-control form-control-lg" type="text" readonly value="{{ vehiculo.cliente }}">
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label form-control-lg" for="">Chasis</label>
+                            <label class="form-label form-control-lg" for="">Chasis:</label>
                         </div>
                         <div class="col-md-10">
                             <input class="form-control form-control-lg" type="text" readonly value="{{ vehiculo.chasis }}">
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label form-control-lg" for="">Descripción</label>
+                            <label class="form-label form-control-lg" for="">Descripción:</label>
                         </div>
                         <div class="col-md-10">
                             <input class="form-control form-control-lg" type="text" readonly value="{{ vehiculo.descripcion }}">
@@ -122,7 +122,7 @@
                                 <label class="form-label form-control-lg" for="">Km actual:</label>
                             </div>
                             <div class="col-md-7">
-                                <input class="form-control form-control-lg" type="text" placeholder="Ingrese el Km actual" required name="kmActual" autocomplete="off">
+                                <input class="form-control form-control-lg" type="text" placeholder="Ingrese el Km actual del vehículo" required name="kmActual" autocomplete="off">
                             </div>
                         </div>
 
@@ -147,7 +147,7 @@
                                 <label class="form-label form-control-lg" for="">Taller:</label>
                             </div>
                             <div class="col-md-7">
-                                <input  id="taller" class="form-control form-control-lg" list="listaTalleres" placeholder="Ingrese el taller" name="taller" autocomplete="off" required>
+                                <input  id="taller" class="form-control form-control-lg" list="listaTalleres" placeholder="Buscar taller. . ." name="taller" autocomplete="off" required>
                                 <datalist id="listaTalleres">
                                     {{#each talleres}}
                                         <option>{{ taller }}</option>
@@ -159,7 +159,7 @@
                         {{!-- Respuestos utilizados --}}
                         <div class="row mt-2 mb-4">
                             <div class="col">
-                                <div class="card mt-2">
+                                <div class="card mt-2 border-primary">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-8">
@@ -201,7 +201,7 @@
                                 <label class="form-label form-control-lg" for="">Observación:</label>
                             </div>
                             <div class="col-md-9">
-                                <textarea class="form-control form-control-lg" name="obs" cols="30" rows="5" placeholder="Escriba su observación" maxlength="500"></textarea>
+                                <textarea class="form-control form-control-lg" name="obs" cols="30" rows="5" placeholder="Escriba su observación. . ." maxlength="500"></textarea>
                             </div>
                         </div>
 

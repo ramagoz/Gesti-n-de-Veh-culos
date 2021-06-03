@@ -2,39 +2,13 @@
     background: #212529 !important;
 }
 
-
-/* .index {
-    background-color: rgba(49, 106, 159, 255);
-} */
-
-
-/* body {
-    background-color: rgba(49, 106, 159, 255);
-} */
-
-.minh-100 {
-    height: 70vh;
+.center-login {
+    height: 90vh;
 }
 
-
-/* .masthead {
-    min-height: 30rem;
-    width: 100%;
-    height: 100%;
-    padding-top: 8rem;
-    padding-bottom: 8rem;
-    background: url('/img/e60.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-} */
-
-
-/* @media (min-width: 992px) {
-    .masthead {
-        height: 100vh;
-    }
-} */
+.minh-100 {
+    height: 60vh;
+}
 
 div.dataTables_wrapper div.dataTables_filter input {
     width: 250px;

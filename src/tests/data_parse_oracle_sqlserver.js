@@ -204,7 +204,7 @@ const ActualizarDatosRepuestos = (async() => {
     try {
         connection = await oracledb.getConnection(databaseOracle);
         try {
-            console.log("Actualizando respuestos. . .");
+            console.log("Actualizando repuestos. . .");
             console.log(new Date());
             datosRepuestos = await connection.execute(`SELECT ART_CODIGO, ART_COD_ALFANUMERICO, ART_DESC, EXIST from ADCS.STK_TD_FOTON_REPUESTOS`); //WHERE ART_CODIGO=54336100029485
             connection.close();
