@@ -1,5 +1,17 @@
 .navbar {
-    background: #212529 !important;
+    /* background: #212529 !important; */
+    background-color: #246194;
+}
+
+.pie-pagina {
+    background-color: #246194;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    color: #005397;
 }
 
 .center-login {
