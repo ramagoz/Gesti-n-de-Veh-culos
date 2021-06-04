@@ -3,6 +3,11 @@
     background-color: #246194;
 }
 
+.navbar h5:hover {
+    /* font-size: large; */
+    transform: scale(1.3);
+}
+
 .pie-pagina {
     background-color: #246194;
 }
