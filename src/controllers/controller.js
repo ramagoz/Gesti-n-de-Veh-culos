@@ -166,7 +166,7 @@ ctrl.getDetallesMantenimiento = async(req, res) => {
             console.log(error);
         }
         console.log('Re: ', repuestos);
-        res.render('detalles-mantenimiento', { idV, vehiculo, mantenimiento, repuestos });
+        res.render('detalles-mantenimientos', { idV, vehiculo, mantenimiento, repuestos });
 
     } else {
         req.session.auth = false;
