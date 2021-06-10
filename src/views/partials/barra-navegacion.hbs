@@ -6,42 +6,47 @@
             </button>
             <div class="collapse navbar-collapse px-sm-5" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-0 d-flex justify-content-around">
-                    <li class="nav-item px-3">
+                    <li class="nav-item px-2">
                         <a class="nav-link active" aria-current="page" href="/vehiculos"><h5>Vehículos</h5></a>
                     </li>
-                    <li class="nav-item px-3">
+                    <li class="nav-item px-2">
                         <a class="nav-link active" aria-current="page" href="/repuestos"><h5>Repuestos</h5></a>
                     </li>
-                    <li class="nav-item px-3">
+                    <li class="nav-item px-2">
                         <a class="nav-link active" aria-current="page" href="/mantenimientos"><h5>Mantenimientos</h5></a>
                     </li>
 
                     {{#ifCond session.idRol '==' 1 }}
-                        <li class="nav-item px-3">
+                        <li class="nav-item px-2">
                             <a class="nav-link active" aria-current="page" href="/informes"><h5>Informes</h5></a>
                         </li>
                     {{/ifCond}}
                     {{#ifCond session.idRol '==' 2 }}
-                        <li class="nav-item px-3">
+                        <li class="nav-item px-2">
                             <a class="nav-link active" aria-current="page" href="/informes"><h5>Informes</h5></a>
                         </li>
                     {{/ifCond}}
 
                     {{#ifCond session.idRol '==' 1 }}
-                        <li class="nav-item px-3">
+                        <li class="nav-item px-2">
                             <a class="nav-link active" aria-current="page" href="/auditoria"><h5>Auditoría</h5></a>
                         </li>
                     {{/ifCond}}
                     {{#ifCond session.idRol '==' 2 }}
-                        <li class="nav-item px-3">
+                        <li class="nav-item px-2">
                             <a class="nav-link active" aria-current="page" href="/auditoria"><h5>Auditoría</h5></a>
                         </li>
                     {{/ifCond}}
 
-                    <li class="nav-item px-3">
+                    <li class="nav-item px-2">
                         <a class="nav-link active" aria-current="page" href="/cambiar-clave"><h5>Cambiar acceso</h5></a>
                     </li>
-                    <li class="nav-item px-3">
+                    {{#ifCond session.idRol '==' 1 }}
+                        <li class="nav-item px-2">
+                            <a class="nav-link active" aria-current="page" href="/usuarios"><h5>Usuarios</h5></a>
+                        </li>
+                    {{/ifCond}}
+                    <li class="nav-item px-2">
                         <a class="nav-link active" aria-current="page" href="/salir"><h5>Salir</h5></a>
                     </li>
                 </ul>

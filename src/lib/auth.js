@@ -1,7 +1,10 @@
 module.exports = {
     isLoggedIn(req, res, next) {
-        if (req.isAuthenticated())
+        if (req.session.auth) {
             return next();
-        res.redirect('/signin');
+        } else {
+            req.session.auth = false;
+            res.redirect('/');
+        }
     }
 };

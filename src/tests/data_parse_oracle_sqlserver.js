@@ -205,7 +205,6 @@ const ActualizarDatosRepuestos = (async() => {
         connection = await oracledb.getConnection(databaseOracle);
         try {
             console.log("Actualizando repuestos. . .");
-            console.log(new Date());
             datosRepuestos = await connection.execute(`SELECT ART_CODIGO, ART_COD_ALFANUMERICO, ART_DESC, EXIST from ADCS.STK_TD_FOTON_REPUESTOS`); //WHERE ART_CODIGO=54336100029485
             connection.close();
         } catch (error) {
@@ -283,19 +282,19 @@ var minutes = 1,
     intervalo = minutes * 60 * 1000; //se encuentra en milisegundos
 
 //ejecutamos la actualizacion de la BD en intervalos de tiempo
-// setInterval(function() {
-//     console.log("Actualizando BD . . .");
-//     // ObtenerDatos();
-//     ActualizarDatosRepuestos();
-// }, intervalo);
+setInterval(function() {
+    console.log("Actualizando BD . . .");
+    console.log(getDate(new Date()));
+    ObtenerDatos();
+    ActualizarDatosRepuestos();
+}, intervalo);
 
-ObtenerDatos();
-ActualizarDatosRepuestos();
-// console.log(getDate(new Date()));
+// ObtenerDatos();
+// ActualizarDatosRepuestos();
 
-// function getDate(date) {
-//     var fecha = date.getDate() + '-' +
-//         (date.getMonth() + 1) + '-' + date.getFullYear();
-//     var hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-//     return fecha + ' ' + hora;
-// }
+function getDate(date) {
+    var fecha = date.getDate() + '-' +
+        (date.getMonth() + 1) + '-' + date.getFullYear();
+    var hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+    return fecha + ' ' + hora;
+}

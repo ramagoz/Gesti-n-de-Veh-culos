@@ -1,0 +1,116 @@
+<div class="container mb-5">
+    <div class="row justify-content-center my-4 pt-4">
+        <h1>Usuarios</h1>
+    </div>
+
+    {{#if msjError}}
+        <div class="col-sm-12 col-md-6">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{msjError.msj}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    {{/if}}
+    {{#if msjOk}}
+        <div class="col-sm-12 col-md-6">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{msjOk.msj}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    {{/if}}
+
+    <div class="row ">
+
+        {{!-- Seccion alta de usuarios --}}
+        <div class="col-sm-12 col-md-6">
+            <div class="card text-center border-primary shadow-lg mb-4">
+                <div class="card-header">
+                    <h3>Alta de usuarios</h3>
+                </div>
+                <div class="card-body">
+                    <form action="/usuarios" method="POST">
+                        <div class="row">
+                            <div class="col-12">
+                                <input name="user" type="text" class="form-control form-control-lg mb-2" placeholder="Usuario" required>
+                            </div>
+                            <div class="col-12">
+                                <select class="form-control form-control-lg mb-2" name="id_rol" id="id_rol" required>
+                                     <option disabled selected value>-- Seleccione un rol --</option>
+                                    {{#each roles}}
+                                        <option value="{{ id }}"> {{ rol}} </option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <input name="password" type="password" class="form-control form-control-lg mb-2" placeholder="Contraseña" required>
+                            </div>
+                            <div class="col-12">
+                                <input name="password2" type="password" class="form-control form-control-lg mb-2" placeholder="Repetir contraseña" required>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Registrar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {{!-- Seccion listado de usuarios --}}
+        <div class="col-sm-12 col-md-6">
+            <div class="card text-center border-primary shadow-lg">
+                <div class="card-header">
+                    <h3>Usuarios del sistema</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped table-bordered hover myTable" id="myTable" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Usuario</th>
+                                <th scope="col">Rol</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            {{#each usuarios }}
+                                <tr>
+                                    <td>{{ id }}</td>
+                                    <td>{{ usuario }}</td>
+                                    <td>{{ rol }}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<style>
+    div.dataTables_wrapper div.dataTables_filter input {
+        width: 150px;
+    }
+</style>
+<script src="/js/jquery.dataTables.min.js"></script>
+<script src="/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+            language:{
+                url: "https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+            },
+            scrollX:        true,
+            scrollCollapse: true,
+            "aaSorting": [[ 0, "desc" ]]
+        });
+    } );
+</script>

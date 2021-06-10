@@ -34,3 +34,7 @@ h4 {
 div.dataTables_wrapper div.dataTables_filter input {
     width: 250px;
 }
+
+.card-body {
+    border-top: 1px solid #007bff !important;
+}

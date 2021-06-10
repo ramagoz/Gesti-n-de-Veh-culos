@@ -57,165 +57,144 @@ ctrl.getSalir = async(req, res) => {
 };
 ctrl.getVehiculos = async(req, res) => {
 
-    if (req.session.auth) {
-        let vehiculos = "";
 
-        try {
-            await sql.connect(databaseSqlServer);
-            vehiculos = await sql.query(`select v.chasis, v.chapa, c.cliente, v.descripcion, v.id
+    let vehiculos = "";
+
+    try {
+        await sql.connect(databaseSqlServer);
+        vehiculos = await sql.query(`select v.chasis, v.chapa, c.cliente, v.descripcion, v.id
             from sgv_vehiculos v
             left join sgv_clientes c on c.id = v.id_cliente;`);
 
-        } catch (error) {
-            console.log(error);
-            let msj = { msj: "Ocurrio un error al recuperar datos." };
-            res.redirect('/', { msj });
-            return;
-        }
-
-        let check = false;
-        let check2 = false;
-
-        res.render('vehiculos', { vehiculos, check, check2 });
-    } else {
-        req.session.auth = false;
-        res.redirect('/');
+    } catch (error) {
+        console.log(error);
+        let msj = { msj: "Ocurrio un error al recuperar datos." };
+        res.redirect('/', { msj });
+        return;
     }
+
+    let check = false;
+    let check2 = false;
+
+    res.render('vehiculos', { vehiculos, check, check2 });
+
 };
 ctrl.getVehiculosVendidos = async(req, res) => {
 
-    if (req.session.auth) {
-        let vehiculos = "";
 
-        try {
-            await sql.connect(databaseSqlServer);
-            vehiculos = await sql.query(`select v.chasis, v.chapa, c.cliente, v.descripcion, v.id
+    let vehiculos = "";
+
+    try {
+        await sql.connect(databaseSqlServer);
+        vehiculos = await sql.query(`select v.chasis, v.chapa, c.cliente, v.descripcion, v.id
             from sgv_vehiculos v
             join sgv_clientes c on c.id = v.id_cliente;`);
-        } catch (error) {
-            console.log(error);
-            let msj = { msj: "Ocurrio un error al recuperar datos." };
-            res.redirect('/', { msj });
-            return;
-        }
-
-        let check = true;
-
-        res.render('vehiculos', { vehiculos, check });
-    } else {
-        req.session.auth = false;
-        res.redirect('/');
+    } catch (error) {
+        console.log(error);
+        let msj = { msj: "Ocurrio un error al recuperar datos." };
+        res.redirect('/', { msj });
+        return;
     }
+
+    let check = true;
+
+    res.render('vehiculos', { vehiculos, check });
+
 
 };
 ctrl.getVehiculosNoVendidos = async(req, res) => {
 
-    if (req.session.auth) {
-        let vehiculos = "";
 
-        try {
-            await sql.connect(databaseSqlServer);
-            vehiculos = await sql.query(`select v.chasis, v.chapa, c.cliente, v.descripcion, v.id
+    let vehiculos = "";
+
+    try {
+        await sql.connect(databaseSqlServer);
+        vehiculos = await sql.query(`select v.chasis, v.chapa, c.cliente, v.descripcion, v.id
             from sgv_vehiculos v
             left join sgv_clientes c on c.id = v.id_cliente
 			where c.cliente is null;`);
-        } catch (error) {
-            console.log(error);
-            let msj = { msj: "Ocurrio un error al recuperar datos." };
-            res.redirect('/', { msj });
-            return;
-        }
-
-        let check2 = true;
-
-        res.render('vehiculos', { vehiculos, check2 });
-    } else {
-        req.session.auth = false;
-        res.redirect('/');
+    } catch (error) {
+        console.log(error);
+        let msj = { msj: "Ocurrio un error al recuperar datos." };
+        res.redirect('/', { msj });
+        return;
     }
+
+    let check2 = true;
+
+    res.render('vehiculos', { vehiculos, check2 });
+
 
 };
 ctrl.getDatosVehiculo = async(req, res) => {
-    if (req.session.auth) {
-        try {
-            vehiculo = await ObtenerDatosVehiculoPorId(req.params.id);
-        } catch (error) {
-            console.log(error);
-            let msj = { msj: "Ocurrio un error al recuperar datos." };
-            res.redirect('/vehiculos', { msj });
-            return;
-        }
 
-        res.render('ver-datos-vehiculo', { vehiculo });
-    } else {
-        req.session.auth = false;
-        res.redirect('/');
+    try {
+        vehiculo = await ObtenerDatosVehiculoPorId(req.params.id);
+    } catch (error) {
+        console.log(error);
+        let msj = { msj: "Ocurrio un error al recuperar datos." };
+        res.redirect('/vehiculos', { msj });
+        return;
     }
+
+    res.render('ver-datos-vehiculo', { vehiculo });
+
 }
 ctrl.getDetallesMantenimiento = async(req, res) => {
-    if (req.session.auth) {
-        id = req.params.id;
-        let vehiculo, repuestos, mantenimiento = '';
 
-        try {
-            idV = await ObtenerIdVehiculoPorIdMan(id);
-            vehiculo = await ObtenerDatosVehiculoPorId2(idV);
-            mantenimiento = await ObtenerMantenimientosPorIdMan(id);
-            repuestos = await ObtenerRepuestosPorIdMan(id);
-        } catch (error) {
-            console.log(error);
-        }
-        console.log('Re: ', repuestos);
-        res.render('detalles-mantenimientos', { idV, vehiculo, mantenimiento, repuestos });
+    id = req.params.id;
+    let vehiculo, repuestos, mantenimiento = '';
 
-    } else {
-        req.session.auth = false;
-        res.redirect('/');
+    try {
+        idV = await ObtenerIdVehiculoPorIdMan(id);
+        vehiculo = await ObtenerDatosVehiculoPorId2(idV);
+        mantenimiento = await ObtenerMantenimientosPorIdMan(id);
+        repuestos = await ObtenerRepuestosPorIdMan(id);
+    } catch (error) {
+        console.log(error);
     }
+    console.log('Re: ', repuestos);
+    res.render('detalles-mantenimientos', { idV, vehiculo, mantenimiento, repuestos });
+
+
 }
 ctrl.getDetallesMantenimientos = async(req, res) => {
-    if (req.session.auth) {
-        id = req.params.id;
-        let vehiculo, repuestos, mantenimiento = '';
 
-        try {
-            idV = await ObtenerIdVehiculoPorIdMan(id);
-            vehiculo = await ObtenerDatosVehiculoPorId2(idV);
-            mantenimiento = await ObtenerMantenimientosPorIdMan(id);
-            repuestos = await ObtenerRepuestosPorIdMan(id);
-        } catch (error) {
-            console.log(error);
-        }
-        console.log('Re: ', repuestos);
-        res.render('detalles-mantenimientos', { idV, vehiculo, mantenimiento, repuestos });
+    id = req.params.id;
+    let vehiculo, repuestos, mantenimiento = '';
 
-    } else {
-        req.session.auth = false;
-        res.redirect('/');
+    try {
+        idV = await ObtenerIdVehiculoPorIdMan(id);
+        vehiculo = await ObtenerDatosVehiculoPorId2(idV);
+        mantenimiento = await ObtenerMantenimientosPorIdMan(id);
+        repuestos = await ObtenerRepuestosPorIdMan(id);
+    } catch (error) {
+        console.log(error);
     }
+    console.log('Re: ', repuestos);
+    res.render('detalles-mantenimientos', { idV, vehiculo, mantenimiento, repuestos });
+
+
 }
 ctrl.getMantenimientosVehiculo = async(req, res) => {
-    if (req.session.auth) {
-        let id = req.params.id;
-        let vehiculo, repuesto, kms = '';
-        console.log(id);
-        try {
-            vehiculo = await ObtenerDatosVehiculoPorId2(id);
-            repuestos = await ObtenerRepuestos();
-            kms = await ObtenerKms();
-            mantenimientos = await ObtenerMantenimientos(id);
-            talleres = await ObtenerDatosTalleres();
-        } catch (error) {
-            console.log(error);
-            return;
-        }
-        console.log(vehiculo);
-        res.render('mantenimientos-vehiculo', { vehiculo, repuestos, kms, mantenimientos, talleres });
 
-    } else {
-        req.session.auth = false;
-        res.redirect('/');
+    let id = req.params.id;
+    let vehiculo, repuesto, kms = '';
+    console.log(id);
+    try {
+        vehiculo = await ObtenerDatosVehiculoPorId2(id);
+        repuestos = await ObtenerRepuestos();
+        kms = await ObtenerKms();
+        mantenimientos = await ObtenerMantenimientos(id);
+        talleres = await ObtenerDatosTalleres();
+    } catch (error) {
+        console.log(error);
+        return;
     }
+    console.log(vehiculo);
+    res.render('mantenimientos-vehiculo', { vehiculo, repuestos, kms, mantenimientos, talleres });
+
+
 }
 ctrl.postRegistrarMantenimiento = async(req, res) => {
 
@@ -333,25 +312,22 @@ ctrl.postRegistrarMantenimiento = async(req, res) => {
 }
 ctrl.getActualizarDatosVehiculo = async(req, res) => {
 
-    if (req.session.auth) {
-        try {
-            vehiculo = await ObtenerDatosVehiculoPorId(req.params.id);
-            modelos = await ObtenerDatosModelos();
-            talleres = await ObtenerDatosTalleres();
-            formasPago = await ObtenerDatosFormasPago();
-            ubicaciones = await ObtenerDatosUbicaciones();
-        } catch (error) {
-            console.log(error);
-            let msjError = { msj: "Ocurrio un error al recuperar datos." };
-            res.redirect('/vehiculos', { msjError });
-            return;
-        }
 
-        res.render('actualizar-datos-vehiculo', { vehiculo, modelos, talleres, formasPago, ubicaciones });
-    } else {
-        req.session.auth = false;
-        res.redirect('/');
+    try {
+        vehiculo = await ObtenerDatosVehiculoPorId(req.params.id);
+        modelos = await ObtenerDatosModelos();
+        talleres = await ObtenerDatosTalleres();
+        formasPago = await ObtenerDatosFormasPago();
+        ubicaciones = await ObtenerDatosUbicaciones();
+    } catch (error) {
+        console.log(error);
+        let msjError = { msj: "Ocurrio un error al recuperar datos." };
+        res.redirect('/vehiculos', { msjError });
+        return;
     }
+
+    res.render('actualizar-datos-vehiculo', { vehiculo, modelos, talleres, formasPago, ubicaciones });
+
 }
 ctrl.postActualizarDatosVehiculo = async(req, res) => {
     const { taller, modelo, ubicacion, formaPago, chapa, id } = req.body;
@@ -550,131 +526,119 @@ ctrl.postAgregarTaller = async(req, res) => {
     res.render('actualizar-datos-vehiculo', { vehiculo, msjOk, modelos, talleres, formasPago, ubicaciones });
 };
 ctrl.getRepuestos = async(req, res) => {
-    if (req.session.auth) {
 
-        let query = `select cod_alfa, descripcion, exist from sgv_repuestos where exist is not null;`;
 
-        try {
-            await sql.connect(databaseSqlServer);
-            repuestos = await sql.query(query);
+    let query = `select cod_alfa, descripcion, exist from sgv_repuestos where exist is not null;`;
 
-        } catch (error) {
-            console.log(error);
-            return;
-        }
-        repuestos = repuestos.recordset;
+    try {
+        await sql.connect(databaseSqlServer);
+        repuestos = await sql.query(query);
 
-        res.render('repuestos', { repuestos });
-
-    } else {
-        req.session.auth = false;
-        res.redirect('/');
+    } catch (error) {
+        console.log(error);
+        return;
     }
+    repuestos = repuestos.recordset;
+
+    res.render('repuestos', { repuestos });
+
+
 };
 ctrl.getMantenimientos = async(req, res) => {
-    if (req.session.auth) {
 
-        let query = `select m.id, format(m.fecha,\'dd-MM-yyyy\') as fecha, c.cliente, m.km, k.kms, t.taller from sgv_mantenimientos m
+
+    let query = `select m.id, format(m.fecha,\'dd-MM-yyyy\') as fecha, c.cliente, m.km, k.kms, t.taller from sgv_mantenimientos m
         join sgv_vehiculos v on v.id = m.id_vehiculo
         join sgv_kilometrajes k on k.id = m.id_kms
         left join sgv_clientes c on v.id_cliente = c.id
         join sgv_talleres t on t.id = m.id_taller;`;
 
-        try {
-            await sql.connect(databaseSqlServer);
-            mantenimientos = await sql.query(query);
+    try {
+        await sql.connect(databaseSqlServer);
+        mantenimientos = await sql.query(query);
 
-        } catch (error) {
-            console.log(error);
-            return;
-        }
-        mantenimientos = mantenimientos.recordset;
-
-        res.render('mantenimientos', { mantenimientos });
-
-    } else {
-        req.session.auth = false;
-        res.redirect('/');
+    } catch (error) {
+        console.log(error);
+        return;
     }
+    mantenimientos = mantenimientos.recordset;
+
+    res.render('mantenimientos', { mantenimientos });
+
+
 };
 ctrl.getInformes = async(req, res) => {
-    if (req.session.auth) {
-        res.render('informes');
-    } else {
-        req.session.auth = false;
-        res.redirect('/');
-    }
+
+    res.render('informes');
+
 }
 ctrl.postGenerarInforme = async(req, res) => {
-    if (req.session.auth) {
-        let { desde, hasta } = req.body;
-        let cantMant;
-        console.log("Desde: " + desde + " Hasta: " + hasta);
-        var pdf = require("pdf-creator-node");
-        var fs = require("fs");
 
-        //template del informe
-        var html = fs.readFileSync('./src/views/formatoInforme.hbs', 'utf8');
-        //datos para el informe
-        try {
-            cantMant = await ObtenerCantMant(desde, hasta);
-            mantenimientos = await ObtenerMantPorFecha(desde, hasta);
-            cantRep = await ObtenerCantRepUtilizados(desde, hasta);
-            if (cantRep == null) {
-                cantRep = 0;
-            }
-            repuestos = await ObtenerRepPorFecha(desde, hasta);
-        } catch (error) {
-            console.log(error);
+    let { desde, hasta } = req.body;
+    let cantMant;
+    console.log("Desde: " + desde + " Hasta: " + hasta);
+    var pdf = require("pdf-creator-node");
+    var fs = require("fs");
+
+    //template del informe
+    var html = fs.readFileSync('./src/views/formatoInforme.hbs', 'utf8');
+    //datos para el informe
+    try {
+        cantMant = await ObtenerCantMant(desde, hasta);
+        mantenimientos = await ObtenerMantPorFecha(desde, hasta);
+        cantRep = await ObtenerCantRepUtilizados(desde, hasta);
+        if (cantRep == null) {
+            cantRep = 0;
         }
-
-        //opciones de configuracion de pagina
-        var options = {
-            format: "A4",
-            orientation: "portrait",
-            border: "5mm",
-            header: {
-                height: "10mm",
-                contents: '<div style="text-align: center;"><h3>Informe - Sistema Gestión de vehículos</h3></div>'
-            },
-            footer: {
-                height: "10mm",
-                contents: {
-                    // first: 'Pág. 1 - {{page}}',
-                    // 2: 'Pág. 2',
-                    default: '<span style="color: #444;text-align: center;">{{page}}</span>/<span>{{pages}}</span>',
-                    // last: 'Ultima Página'
-                }
-            }
-        };
-        //definicion del template, datos y formato del documento
-        var document = {
-            html: html,
-            data: {
-                hoy: getDate(new Date()),
-                desde: formatDate(desde),
-                hasta: formatDate(hasta),
-                cantMant,
-                mantenimientos,
-                cantRep,
-                repuestos
-            },
-            //path: "./resultado.pdf",
-            type: "stream",
-        };
-        //creacion del informe en pdf
-        pdf
-            .create(document, options)
-            .then((stream) => {
-                stream.pipe(res);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    } else {
-        req.session.auth = false;
-        res.redirect('/');
+        repuestos = await ObtenerRepPorFecha(desde, hasta);
+    } catch (error) {
+        console.log(error);
     }
+
+    //opciones de configuracion de pagina
+    var options = {
+        format: "A4",
+        orientation: "portrait",
+        border: "5mm",
+        header: {
+            height: "10mm",
+            contents: '<div style="text-align: center;"><h3>Informe - Sistema Gestión de vehículos</h3></div>'
+        },
+        footer: {
+            height: "10mm",
+            contents: {
+                // first: 'Pág. 1 - {{page}}',
+                // 2: 'Pág. 2',
+                default: '<span style="color: #444;text-align: center;">{{page}}</span>/<span>{{pages}}</span>',
+                // last: 'Ultima Página'
+            }
+        }
+    };
+    //definicion del template, datos y formato del documento
+    var document = {
+        html: html,
+        data: {
+            hoy: getDate(new Date()),
+            desde: formatDate(desde),
+            hasta: formatDate(hasta),
+            cantMant,
+            mantenimientos,
+            cantRep,
+            repuestos
+        },
+        //path: "./resultado.pdf",
+        type: "stream",
+    };
+    //creacion del informe en pdf
+    pdf
+        .create(document, options)
+        .then((stream) => {
+            stream.pipe(res);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+
 
 }
 ctrl.verInforme = async(req, res) => {
@@ -687,92 +651,146 @@ ctrl.verInforme = async(req, res) => {
     res.render('informe');
 }
 ctrl.getAuditoria = async(req, res) => {
-    if (req.session.auth) {
 
-        let query = `select a.id, format(a.fecha,\'dd-MM-yyyy HH:mm:ss\') as fecha, u.usuario, a.accion from sgv_auditoria a
+
+    let query = `select a.id, format(a.fecha,\'dd-MM-yyyy HH:mm:ss\') as fecha, u.usuario, a.accion from sgv_auditoria a
         join sgv_usuarios u on u.id = a.id_usuario;`;
 
-        try {
-            await sql.connect(databaseSqlServer);
-            auditoria = await sql.query(query);
+    try {
+        await sql.connect(databaseSqlServer);
+        auditoria = await sql.query(query);
 
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+    console.log(auditoria);
+
+    auditoria = auditoria.recordset;
+
+    res.render('auditoria', { auditoria });
+
+
+};
+ctrl.getUsuarios = async(req, res) => {
+
+
+
+    try {
+        usuarios = await ObtenerUsuarios();
+        roles = await ObtenerRoles();
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+
+    res.render('usuarios', { usuarios, roles });
+
+
+};
+ctrl.postUsuarios = async(req, res) => {
+    let { user, password, password2, id_rol } = req.body;
+    roles = await ObtenerRoles();
+
+    if (password != password2) {
+        try {
+            usuarios = await ObtenerUsuarios();
         } catch (error) {
             console.log(error);
             return;
         }
-        console.log(auditoria);
-
-        auditoria = auditoria.recordset;
-
-        res.render('auditoria', { auditoria });
-
+        let msjError = { msj: "Las contraseñas no coinciden! " };
+        res.render('usuarios', { msjError, usuarios, roles });
     } else {
-        req.session.auth = false;
-        res.redirect('/');
-    }
-};
-ctrl.getCambiarClave = async(req, res) => {
-    if (req.session.auth) {
-        res.render('cambiar-clave');
-    } else {
-        req.session.auth = false;
-        res.redirect('/');
-    }
-};
-ctrl.postCambiarClave = async(req, res) => {
-    if (req.session.auth) {
-        let msjOk, msjError;
-        const { passwordActual, passwordNuevo, passwordConfirmar } = req.body;
-        usuario = req.session.user;
 
-        let query = `select * from sgv_usuarios where usuario=@usuario;`;
+        pass = await helpers.encryptPassword(password);
+
+        let query = `insert into sgv_usuarios (id_rol, usuario, clave)
+        values (@id_rol, @user, @pass);`;
 
         try {
+
             let pool = await sql.connect(databaseSqlServer)
             respuesta = await pool.request()
-                .input('usuario', sql.VarChar(20), usuario)
+                .input('id_rol', sql.Int, id_rol)
+                .input('user', sql.VarChar(20), user)
+                .input('pass', sql.VarChar(100), pass)
                 .query(query);
+            console.log(respuesta);
+
+            try {
+                usuarios = await ObtenerUsuarios();
+            } catch (error) {
+                console.log(error);
+                return;
+            }
 
         } catch (error) {
             console.log(error);
             return;
         }
 
-        passwordBD = respuesta.recordset[0].clave;
-        userId = respuesta.recordset[0].id;
+        let msjOk = { msj: "Usuario registrado correctamente! " };
+        res.render('usuarios', { msjOk, usuarios, roles });
+    }
 
-        if (await helpers.matchPassword(passwordActual, passwordBD)) {
-            console.log("Contraseña correcta!");
+}
+ctrl.getCambiarClave = async(req, res) => {
 
-            if (passwordNuevo === passwordConfirmar) {
-                try {
-                    let respuesta = await GuardarNuevaClave(passwordNuevo, userId);
-                    if (respuesta) {
-                        msjOk = { msj: "Contraseña nueva actualizada!" };
-                        console.log("Contraseña nueva actualizada!");
-                    } else {
-                        msjError = { msj: "Ocurrio un error al actualizar contraseña, favor intente de nuevo." };
-                        console.log("Ocurrio un error al actualizar contraseña!");
-                    }
-                } catch (error) {
+    res.render('cambiar-clave');
+
+};
+ctrl.postCambiarClave = async(req, res) => {
+
+    let msjOk, msjError;
+    const { passwordActual, passwordNuevo, passwordConfirmar } = req.body;
+    usuario = req.session.user;
+
+    let query = `select * from sgv_usuarios where usuario=@usuario;`;
+
+    try {
+        let pool = await sql.connect(databaseSqlServer)
+        respuesta = await pool.request()
+            .input('usuario', sql.VarChar(20), usuario)
+            .query(query);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+
+    passwordBD = respuesta.recordset[0].clave;
+    userId = respuesta.recordset[0].id;
+
+    if (await helpers.matchPassword(passwordActual, passwordBD)) {
+        console.log("Contraseña correcta!");
+
+        if (passwordNuevo === passwordConfirmar) {
+            try {
+                let respuesta = await GuardarNuevaClave(passwordNuevo, userId);
+                if (respuesta) {
+                    msjOk = { msj: "Contraseña nueva actualizada!" };
+                    console.log("Contraseña nueva actualizada!");
+                } else {
                     msjError = { msj: "Ocurrio un error al actualizar contraseña, favor intente de nuevo." };
                     console.log("Ocurrio un error al actualizar contraseña!");
                 }
-            } else {
-                msjError = { msj: "Las contraseñas nuevas no coinciden!" };
-                console.log("Contraseña actual incorrecta!");
+            } catch (error) {
+                msjError = { msj: "Ocurrio un error al actualizar contraseña, favor intente de nuevo." };
+                console.log("Ocurrio un error al actualizar contraseña!");
             }
         } else {
-            msjError = { msj: "Contraseña actual incorrecta!" };
+            msjError = { msj: "Las contraseñas nuevas no coinciden!" };
             console.log("Contraseña actual incorrecta!");
         }
-        res.render('cambiar-clave', { msjOk, msjError });
-
     } else {
-        req.session.auth = false;
-        res.render('auth/signin');
+        msjError = { msj: "Contraseña actual incorrecta!" };
+        console.log("Contraseña actual incorrecta!");
     }
+    res.render('cambiar-clave', { msjOk, msjError });
+
 };
+
 //Funciones de apoyo
 let ObtenerDatosTalleres = async() => {
     let query = `select * from sgv_talleres;`;
@@ -1159,6 +1177,38 @@ let ObtenerRepPorFecha = async(desde, hasta) => {
     }
 
     return repuestos.recordset;
+}
+let ObtenerUsuarios = async() => {
+
+    let query = `select u.id, usuario, r.rol
+        from sgv_usuarios u
+        join sgv_roles r on r.id = u.id_rol;`;
+
+    try {
+        await sql.connect(databaseSqlServer);
+        usuarios = await sql.query(query);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+    return usuarios.recordset;
+
+}
+let ObtenerRoles = async() => {
+
+    let query = `select * from sgv_roles order by id;`;
+
+    try {
+        await sql.connect(databaseSqlServer);
+        roles = await sql.query(query);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+    return roles.recordset;
+
 }
 
 function getDate(date) {
