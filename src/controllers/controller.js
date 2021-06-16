@@ -674,8 +674,6 @@ ctrl.getAuditoria = async(req, res) => {
 };
 ctrl.getUsuarios = async(req, res) => {
 
-
-
     try {
         usuarios = await ObtenerUsuarios();
         roles = await ObtenerRoles();

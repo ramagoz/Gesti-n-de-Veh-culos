@@ -282,15 +282,15 @@ var minutes = 1,
     intervalo = minutes * 60 * 1000; //se encuentra en milisegundos
 
 //ejecutamos la actualizacion de la BD en intervalos de tiempo
-setInterval(function() {
-    console.log("Actualizando BD . . .");
-    console.log(getDate(new Date()));
-    ObtenerDatos();
-    ActualizarDatosRepuestos();
-}, intervalo);
+// setInterval(function() {
+//     console.log("Actualizando BD . . .");
+//     console.log(getDate(new Date()));
+//     ObtenerDatos();
+//     ActualizarDatosRepuestos();
+// }, intervalo);
 
 // ObtenerDatos();
-// ActualizarDatosRepuestos();
+ActualizarDatosRepuestos();
 
 function getDate(date) {
     var fecha = date.getDate() + '-' +
