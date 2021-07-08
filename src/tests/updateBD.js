@@ -278,19 +278,20 @@ const ActualizarDatosRepuestos = (async() => {
 
 
 //intervalo de ejecucion 
-var minutes = 1,
+var minutes = 720,
     intervalo = minutes * 60 * 1000; //se encuentra en milisegundos
 
 //ejecutamos la actualizacion de la BD en intervalos de tiempo
-// setInterval(function() {
-//     console.log("Actualizando BD . . .");
-//     console.log(getDate(new Date()));
-//     ObtenerDatos();
-//     ActualizarDatosRepuestos();
-// }, intervalo);
+setInterval(function() {
+    console.log("Actualizando BD . . .");
+    console.log(getDate(new Date()));
+    ActualizarDatosRepuestos();
+    setTimeout(function() {
+        ObtenerDatos();
+    }, 3000);
+}, intervalo);
 
-// ObtenerDatos();
-ActualizarDatosRepuestos();
+
 
 function getDate(date) {
     var fecha = date.getDate() + '-' +
