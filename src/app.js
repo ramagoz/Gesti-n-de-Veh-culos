@@ -9,18 +9,6 @@ const { port } = require('./config');
 // Intializations
 const app = express();
 
-// Helper para Handlebars
-// var hbs = exphbs.create({
-//     helpers: {
-//         ifCond: function(v1, v2, options) {
-//             if (v1 === v2) {
-//                 return options.fn(this);
-//             }
-//             return options.inverse(this);
-//         }
-//     }
-// });
-
 // Settings
 app.set('port', port);
 app.set('views', path.join(__dirname, 'views'));
