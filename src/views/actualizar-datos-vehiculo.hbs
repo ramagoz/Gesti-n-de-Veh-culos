@@ -1,7 +1,7 @@
 
 <div class="container-fluid mb-5" style="width:90%">
     <div class="form-row justify-content-center py-4 mx-auto">
-        <h1>Actualizar datos del vehículo</h1>
+        <h2>Actualizar datos del vehículo</h2>
     </div>
     {{#if msjError}}
         <div class="container">
@@ -41,18 +41,18 @@
                     <form action="/agregar-modelo" method="POST">
                         <div class="row justify-content-center">
                             <div class="form-group col-4">
-                                <label class="form-label form-control-lg" for="">Modelo:</label>
+                                <label class="form-label" for="">Modelo:</label>
                             </div>
                             <div class="form-group col-6">
-                                <input class="form-control form-control-lg" type="text" name="modelo" id="inputModelo" required>
+                                <input class="form-control" type="text" name="modelo" id="inputModelo" required>
                             </div>
                         </div>
                         
                         <input class="form-control" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
 
                         <div class="row justify-content-center mt-2">
-                            <button type="submit" class="btn btn-lg btn-primary mx-1">Confirmar</button>
-                            <a href="#" onclick="cerrarFormularioModelo()" class="btn btn-lg btn-danger mx-1">Cancelar</a>
+                            <button type="submit" class="btn btn-primary mx-1">Confirmar</button>
+                            <a href="#" onclick="cerrarFormularioModelo()" class="btn btn-danger mx-1">Cancelar</a>
                         </div>
                     </form>
                 </div>
@@ -68,18 +68,18 @@
                     <form action="/agregar-forma-pago" method="POST">
                         <div class="row justify-content-center">
                             <div class="form-group col-4">
-                                <label class="form-label form-control-lg" for="">Forma de pago:</label>
+                                <label class="form-label" for="">Forma de pago:</label>
                             </div>
                             <div class="form-group col-6">
-                                <input class="form-control form-control-lg" type="text" name="formaPago" required id="inputFormaPago">
+                                <input class="form-control" type="text" name="formaPago" required id="inputFormaPago">
                             </div>
                         </div>
                         
                         <input class="form-control" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
 
                         <div class="row justify-content-center mt-2">
-                            <button type="submit" class="btn btn-lg btn-primary mx-1">Confirmar</button>
-                            <a href="#" onclick="cerrarFormularioFormaPago()" class="btn btn-lg btn-danger mx-1">Cancelar</a>
+                            <button type="submit" class="btn btn-primary mx-1">Confirmar</button>
+                            <a href="#" onclick="cerrarFormularioFormaPago()" class="btn btn-danger mx-1">Cancelar</a>
                         </div>
                     </form>
                 </div>
@@ -95,18 +95,18 @@
                     <form action="/agregar-ubicacion" method="POST">
                         <div class="row justify-content-md-center">
                             <div class="form-group col-4">
-                                <label class="form-label form-control-lg" for="">Ubicación:</label>
+                                <label class="form-label" for="">Ubicación:</label>
                             </div>
                             <div class="form-group col-6">
-                                <input class="form-control form-control-lg" type="text" name="ubicacion" required id="inputUbicacion">
+                                <input class="form-control" type="text" name="ubicacion" required id="inputUbicacion">
                             </div>
                         </div>
                         
                         <input class="form-control" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
 
                         <div class="row justify-content-center mt-2">
-                            <button type="submit" class="btn btn-lg btn-primary mx-1">Confirmar</button>
-                            <a href="#" onclick="cerrarFormularioUbicacion()" class="btn btn-lg btn-danger mx-1">Cancelar</a>
+                            <button type="submit" class="btn btn-primary mx-1">Confirmar</button>
+                            <a href="#" onclick="cerrarFormularioUbicacion()" class="btn btn-danger mx-1">Cancelar</a>
                         </div>
                     </form>
                 </div>
@@ -122,185 +122,122 @@
                     <form action="/agregar-taller" method="POST">
                         <div class="row justify-content-md-center">
                             <div class="form-group col-4">
-                                <label class="form-label form-control-lg" for="">Taller autorizado: </label>
+                                <label class="form-label" for="">Taller autorizado: </label>
                             </div>
                             <div class="form-group col-6">
-                                <input id="inputTaller" class="form-control form-control-lg" type="text" name="taller" required>
+                                <input id="inputTaller" class="form-control" type="text" name="taller" required>
                             </div>
                         </div>
                         
                         <input class="form-control" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
 
                         <div class="row justify-content-center mt-2">
-                            <button type="submit" class="btn btn-lg btn-primary mx-1">Confirmar</button>
-                            <a href="#" onclick="cerrarFormularioTaller()" class="btn btn-lg btn-danger mx-1">Cancelar</a>
+                            <button type="submit" class="btn btn-primary mx-1">Confirmar</button>
+                            <a href="#" onclick="cerrarFormularioTaller()" class="btn btn-danger mx-1">Cancelar</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
     {{!-- Formulario principal --}}
     <form action="/actualizar-datos-vehiculo" method="POST" autocomplete="off">
         
         {{!-- Chasis y Descripción --}}
         <div class="form-row">
 
-            <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label class="form-label col-form-label-lg">Chasis:</label>
+            <div class="form-group col-sm-12 col-md-12 col-lg-6">                
+                <label class="form-label">Chasis:</label>
+                <input class="form-control form-control" value="{{ vehiculo.chasis }}" disabled>
             </div>
 
-            <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control form-control-lg" value="{{ vehiculo.chasis }}" disabled>
+            <div class="form-group col-sm-12 col-md-12 col-lg-6">
+                <label class="form-label">Descripción: </label>
+                <input class="form-control form-control" value="{{ vehiculo.descripcion }}" disabled>
             </div>
-
-            <div class="form-group col-md-1">
-                
-            </div>
-
-            <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label class="form-label col-form-label-lg">Descripción:</label>
-            </div>
-
-            <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control form-control-lg" value="{{ vehiculo.descripcion }}" disabled >
-            </div>
-
-            <div class="form-group col-md-1">
-            </div>
-
-   
 
         </div>
-        {{!-- Cliente y Fecha venta --}}
+
+        {{!-- Cliente y Fecha Venta --}}
         <div class="form-row">
 
-            <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label class="form-label col-form-label-lg">Cliente:</label>
+            <div class="form-group col-sm-12 col-md-12 col-lg-6">
+                <label class="form-label">Cliente:</label>
+                <input class="form-control form-control" value="{{ vehiculo.cliente }}" disabled>
             </div>
 
-            <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control form-control-lg" value="{{ vehiculo.cliente }}" disabled>
+            <div class="form-group col-sm-12 col-md-12 col-lg-6">
+                <label class="form-label">Fecha venta: </label>
+                <input class="form-control  form-control" value="{{ vehiculo.fecha_vta }}" disabled>
             </div>
-
-            <div class="form-group col-md-1">
-            </div>
-
-            <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label for="exampleDataList" class="form-label col-form-label-lg">Fecha venta: </label>
-            </div>
-
-            <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control form-control-lg" value="{{ vehiculo.fecha_vta }}" disabled>
-            </div>   
-
-            <div class="form-group col-md-1">
-            </div>     
 
         </div>
+
         {{!-- Moneda y Saldo --}}
         <div class="form-row">
 
-            <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label class="form-label col-form-label-lg">Moneda:</label>
+            <div class="form-group col-sm-12 col-md-12 col-lg-6">
+                <label class="form-label">Moneda:</label>
+                <input class="form-control form-control" value="{{ vehiculo.moneda }}" disabled>
             </div>
 
-            <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control form-control-lg" value="{{ vehiculo.moneda }}" disabled>
+            <div class="form-group col-sm-12 col-md-12 col-lg-6">
+                <label class="form-label">Saldo: </label>
+                <input class="form-control  form-control" value="{{ vehiculo.saldo }}" disabled>
             </div>
 
-            <div class="form-group col-md-1">
-            </div>
+        </div>  
 
-            <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label class="form-label col-form-label-lg">Saldo:</label>
-            </div>
-
-            <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control form-control-lg" value="{{ vehiculo.saldo }}" disabled>
-            </div>
-
-            <div class="form-group col-md-1">
-            </div>
-
-        </div>        
         {{!-- Fecha importación y Chapa --}}
         <div class="form-row">
 
-            <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label for="exampleDataList" class="form-label col-form-label-lg">Fecha importación:</label>
-            </div>
-
-            <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control form-control-lg" value="{{ vehiculo.fecha_imp }}" disabled>
-            </div>   
-
-            <div class="form-group col-md-1">
+            <div class="form-group col-sm-12 col-md-12 col-lg-6">
+                <label class="form-label">Fecha importación:</label>
+                <input class="form-control form-control" value="{{ vehiculo.fecha_imp }}" disabled>
             </div> 
 
-            <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label for="exampleDataList" class="form-label col-form-label-lg" >Chapa:</label>
-            </div>
-
-            <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input class="form-control form-control-lg" value="{{ vehiculo.chapa }}" name="chapa" placeholder="Escriba el nro. de chapa" autocomplete="off">
-            </div>   
-
-            <div class="form-group col-md-1">
-            </div>  
-
- 
+            <div class="form-group col-sm-12 col-md-12 col-lg-6">
+                <label class="form-label">Chapa: </label>
+                <input class="form-control  form-control" value="{{ vehiculo.chapa }}" name="chapa" placeholder="Escriba el nro. de chapa" autocomplete="off">
+            </div>                         
 
         </div>   
+
         {{!-- Forma de Pago y Modelo --}}
         <div class="form-row">
 
-            <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label for="exampleDataList" class="form-label col-form-label-lg">Forma de pago: </label>
-            </div>
-
-            <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input value="{{ vehiculo.forma }}" id="inputListFormaPago" class="form-control form-control-lg" list="listaFormasPago" placeholder="Escriba la forma de pago" name="formaPago" autocomplete="off">
+            <div class="form-group col-sm-12 col-md-12 col-lg-6">
+                <label class="form-label">Forma de pago:</label>
+                <a href="#" onclick="registrarFormaPago()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nueva forma de pago"><i class="fas fa-plus fa-1x" aria-hidden="true"></i></a>
+                <input value="{{ vehiculo.forma }}" id="inputListFormaPago" class="form-control" list="listaFormasPago" placeholder="Escriba la forma de pago" name="formaPago" autocomplete="off">
                 <datalist id="listaFormasPago">
                     {{#each formasPago}}
                         <option>{{ forma }}</option>
                     {{/each}}
                 </datalist>
-
-            </div>   
-
-            <div class="form-group col-md-1">
-                <a href="#" onclick="registrarFormaPago()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nueva forma de pago"><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a>
-            </div>  
-
-            <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label for="exampleDataList" class="form-label col-form-label-lg">Modelo:</label>
             </div>
 
-            <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input value="{{ vehiculo.modelo }}" id="inputListModelo" class="form-control form-control-lg" list="listaModelos" placeholder="Escriba el modelo" name="modelo" autocomplete="off">
+            <div class="form-group col-sm-12 col-md-12 col-lg-6">
+                <label class="form-label">Modelo:</label>
+                <a href="#" onclick="registrarModelo()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nuevo modelo"><i class="fas fa-plus fa-1x" aria-hidden="true"></i></a>
+                <input value="{{ vehiculo.modelo }}" id="inputListModelo" class="form-control" list="listaModelos" placeholder="Escriba el modelo" name="modelo" autocomplete="off">
                 <datalist id="listaModelos">
                     {{#each modelos}}
                         <option>{{ modelo }}</option>
                     {{/each}}
                 </datalist>
-            </div>   
+            </div>
 
-            <div class="form-group col-md-1">
-                <a href="#" onclick="registrarModelo()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nuevo modelo"><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a>
-            </div>    
-    
+        </div>       
 
-        </div>             
         {{!-- Ubicacion y Taller autorizado --}}
         <div class="form-row">
 
-            <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label class="form-label col-form-label-lg">Ubicación:</label>
-            </div>
-
-            <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input value="{{ vehiculo.ubi }}" id="inputListUbicacion" class="form-control form-control-lg" list="listaUbicaciones" placeholder="Escriba la ubicación" name="ubicacion" autocomplete="off">
+            <div class="form-group col-sm-12 col-md-12 col-lg-6">
+                <label class="form-label">Ubicación:</label>
+                <a href="#" onclick="registrarUbicacion()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nueva ubicación"><i class="fas fa-plus fa-1x" aria-hidden="true"></i></a>
+                <input value="{{ vehiculo.ubi }}" id="inputListUbicacion" class="form-control" list="listaUbicaciones" placeholder="Escriba la ubicación" name="ubicacion" autocomplete="off">
                 <datalist id="listaUbicaciones">
                     {{#each ubicaciones}}
                         <option>{{ ubi }}</option>
@@ -308,36 +245,26 @@
                 </datalist>
             </div>
 
-            <div class="form-group col-md-1">
-                <a href="#" onclick="registrarUbicacion()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nueva ubicación"><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a>
-            </div>
-
-            <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-1">
-                <label for="exampleDataList" class="form-label col-form-label-lg">Taller autorizado: </label>
-            </div>
-
-            <div class="form-group col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-4">                
-                <input value="{{ vehiculo.taller }}" id="inputListTaller" class="form-control form-control-lg" list="listaTalleres" placeholder="Escriba el taller" name="taller" autocomplete="off">
+            <div class="form-group col-sm-12 col-md-12 col-lg-6">
+                <label class="form-label">Taller aurotizado:</label>
+                <a href="#" onclick="registrarTaller()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nuevo taller"><i class="fas fa-plus fa-1x" aria-hidden="true"></i></a>
+                <input value="{{ vehiculo.taller }}" id="inputListTaller" class="form-control" list="listaTalleres" placeholder="Escriba el taller" name="taller" autocomplete="off">
                 <datalist id="listaTalleres">
                     {{#each talleres}}
                         <option>{{ taller }}</option>
                     {{/each}}
                 </datalist>
-            </div>   
-
-            <div class="form-group col-md-1">
-                <a href="#" onclick="registrarTaller()" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar nuevo taller"><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a>
-            </div>     
+            </div>
 
         </div>
         {{!-- Id vehiculo oculto --}}
         <input class="form-control form-control-lg" type="text" name="id" value="{{ vehiculo.id }}" style="display: none;">
         {{!-- Botones --}}
         <div class="form-row justify-content-center my-3">
-            <div class="col-xl-2 col-lg-3 col-md-4 col-xs-11 col-sm-11">
+            <div class="col-xl-3 col-lg-3 col-md-4 col-xs-11 col-sm-11">
                 <button type="submit" class="btn btn-block btn-success btn-lg mx-1 my-1">Guardar</button>
             </div>
-            <div class="col-xl-2 col-lg-3 col-md-4 col-xs-11 col-sm-11">
+            <div class="col-xl-3 col-lg-3 col-md-4 col-xs-11 col-sm-11">
                 <a href="/vehiculos" class="btn btn-block btn-danger btn-lg mx-1 my-1">Cancelar</a>
             </div>
         </div>

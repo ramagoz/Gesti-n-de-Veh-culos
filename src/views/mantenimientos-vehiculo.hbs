@@ -1,6 +1,6 @@
 <div class="container-fluid mb-5" style="width: 95%;">
     <div class="form-row justify-content-md-center pt-4 mx-auto">
-        <h1>Mantenimientos del vehículo</h1>
+        <h2>Mantenimientos del vehículo</h2>
     </div> 
     {{#if msjError}}
         <div class="container">
@@ -35,6 +35,7 @@
         
         {{!-- Seccion datos del vehiculo y mantenimientos realizados --}}
         <div class="col-md-12 col-lg-6 mb-4">
+
             {{!-- Datos del vehículo --}}
             <div class="card mb-4 border-primary shadow-lg">
                 <div class="card-header h4 text-center">
@@ -42,24 +43,28 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-2">
-                            <label class="form-label form-control-lg" for="">Cliente:</label>
+
+                        <div class="col-md-2 col-lg-3 mb-2">
+                            <label class="form-label" for="">Cliente:</label>
                         </div>
-                        <div class="col-md-10">
-                            <input class="form-control form-control-lg" type="text" readonly value="{{ vehiculo.cliente }}">
+                        <div class="col-md-10 col-lg-9 mb-2">
+                            <input class="form-control" type="text" readonly value="{{ vehiculo.cliente }}">
                         </div>
-                        <div class="col-md-2">
-                            <label class="form-label form-control-lg" for="">Chasis:</label>
+
+                        <div class="col-md-2 col-lg-3 mb-2">
+                            <label class="form-label" for="">Chasis:</label>
                         </div>
-                        <div class="col-md-10">
-                            <input class="form-control form-control-lg" type="text" readonly value="{{ vehiculo.chasis }}">
+                        <div class="col-md-10 col-lg-9 mb-2">
+                            <input class="form-control" type="text" readonly value="{{ vehiculo.chasis }}">
                         </div>
-                        <div class="col-md-2">
-                            <label class="form-label form-control-lg" for="">Descripción:</label>
+
+                        <div class="col-md-2 col-lg-3 mb-2">
+                            <label class="form-label" for="">Descripción:</label>
                         </div>
-                        <div class="col-md-10">
-                            <input class="form-control form-control-lg" type="text" readonly value="{{ vehiculo.descripcion }}">
+                        <div class="col-md-10 col-lg-9 mb-2">
+                            <input class="form-control" type="text" readonly value="{{ vehiculo.descripcion }}">
                         </div>
+
                     </div>
 
                 </div>
@@ -71,7 +76,7 @@
                     <h4>Mantenimientos realizados</h4>
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped table-bordered hover myTable" id="myTable">
+                    <table class="table table-striped table-bordered hover myTable" id="myTable" style="width:100%">
                         <thead>
                             <tr>
                                 <th scope="col">Id</th>
@@ -108,31 +113,31 @@
 
                         {{!-- Fecha mantenimiento --}}
                         <div class="row">
-                            <div class="col-md-5">
-                                <label class="form-label form-control-lg" for="">Fecha:</label>
+                            <div class="col-md-5 mb-2">
+                                <label class="form-label " for="">Fecha:</label>
                             </div>
-                            <div class="col-md-7">
-                                <input class="form-control form-control-lg" type="date" required name="fecha">
+                            <div class="col-md-7 mb-2">
+                                <input class="form-control " type="date" required name="fecha">
                             </div>
                         </div>
 
                         {{!-- Km actual --}}
                         <div class="row">
-                            <div class="col-md-5">
-                                <label class="form-label form-control-lg" for="">Km actual:</label>
+                            <div class="col-md-5 mb-2">
+                                <label class="form-label " for="">Km actual:</label>
                             </div>
-                            <div class="col-md-7">
-                                <input class="form-control form-control-lg" type="text" placeholder="Ingrese el Km actual del vehículo" required name="kmActual" autocomplete="off">
+                            <div class="col-md-7 mb-2">
+                                <input class="form-control " type="text" placeholder="Ingrese el Km actual del vehículo" required name="kmActual" autocomplete="off">
                             </div>
                         </div>
 
                         {{!-- Rango km mantenimiento --}}
                         <div class="row">
-                            <div class="col-md-5">
-                                <label class="form-label form-control-lg" for="">Rango km:</label>
+                            <div class="col-md-5 mb-2">
+                                <label class="form-label " for="">Rango km:</label>
                             </div>
-                            <div class="col-md-7">
-                                <select class="form-control form-control-lg" name="kmRango" required>
+                            <div class="col-md-7 mb-2">
+                                <select class="form-control " name="kmRango" required>
                                      <option disabled selected value>-- Seleccione rango km --</option>
                                     {{#each kms}}
                                         <option value="{{ id }}"> {{ kms}} </option>
@@ -143,11 +148,11 @@
 
                         {{!-- Taller del mantenimiento --}}
                         <div class="row">
-                            <div class="col-md-5">
-                                <label class="form-label form-control-lg" for="">Taller:</label>
+                            <div class="col-md-5 mb-2">
+                                <label class="form-label " for="">Taller:</label>
                             </div>
-                            <div class="col-md-7">
-                                <input  id="taller" class="form-control form-control-lg" list="listaTalleres" placeholder="Buscar taller. . ." name="taller" autocomplete="off" required>
+                            <div class="col-md-7 mb-2">
+                                <input  id="taller" class="form-control " list="listaTalleres" placeholder="Buscar taller. . ." name="taller" autocomplete="off" required>
                                 <datalist id="listaTalleres">
                                     {{#each talleres}}
                                         <option>{{ taller }}</option>
@@ -173,7 +178,7 @@
                                         <div id="seccionRepuestos">
                                             <div class="row mb-2" id="repuesto">
                                                 <div class="col-8">
-                                                    <input id="inputListaRepuestos" class="form-control form-control-lg" list="listaRepuestos" placeholder="Buscar repuesto. . ." name="repuestos" required>
+                                                    <input id="inputListaRepuestos" class="form-control " list="listaRepuestos" placeholder="Buscar repuesto. . ." name="repuestos" required>
                                                     <datalist id="listaRepuestos">
                                                         {{#each repuestos}}
                                                             <option> {{ repuesto}} </option>
@@ -181,14 +186,14 @@
                                                     </datalist>
                                                 </div>
                                                 <div class="col-4">
-                                                    <input type="number" class="form-control form-control-lg" placeholder="Ingrese la cantidad" name="cantidadRepuestos" required onchange="validarCantidadRepuesto(this)" value="1">
+                                                    <input type="number" class="form-control " placeholder="Ingrese la cantidad" name="cantidadRepuestos" required onchange="validarCantidadRepuesto(this)" value="1">
                                                 </div>
                                             </div>
                                         </div>
                                         <hr>
                                         <div class="row justify-content-end">
-                                            <a id="btnAdd" class="btn btn-lg btn-outline-primary mx-2" onclick="agregarRepuesto()" href="#nogo">Agregar</a>                                        
-                                            <a id="btnDel" class="btn btn-lg btn-outline-danger mx-2" onclick="eliminarRepuesto()" href="#nogo">Eliminar</a>
+                                            <a id="btnAdd" class="btn btn-outline-primary mx-2" onclick="agregarRepuesto()" href="#nogo">Agregar</a>                                        
+                                            <a id="btnDel" class="btn btn-outline-danger mx-2" onclick="eliminarRepuesto()" href="#nogo">Eliminar</a>
                                         </div>
                                     </div>
                                 </div>
@@ -198,10 +203,10 @@
                         {{!-- Observaciones del mantenimiento --}}
                         <div class="row">
                             <div class="col-md-3">
-                                <label class="form-label form-control-lg" for="">Observación:</label>
+                                <label class="form-label " for="">Observación:</label>
                             </div>
                             <div class="col-md-9">
-                                <textarea class="form-control form-control-lg" name="obs" cols="30" rows="5" placeholder="Escriba su observación. . ." maxlength="500"></textarea>
+                                <textarea class="form-control " name="obs" cols="30" rows="5" placeholder="Escriba su observación. . ." maxlength="500"></textarea>
                             </div>
                         </div>
 
@@ -210,10 +215,10 @@
 
                         <div class="row justify-content-center mt-3">
                             <div class="col">
-                                <button type="submit" class="btn btn-lg btn-block btn-success mx-1">Confirmar</button>
+                                <button type="submit" class="btn btn-lg btn-block btn-success mx-1">Registrar</button>
                             </div>
                             <div class="col">
-                                <a href="/ver-datos-vehiculo/{{ vehiculo.id }}" class="btn btn-lg btn-block btn-warning mx-1">Volver</a>
+                                <a href="/ver-datos-vehiculo/{{ vehiculo.id }}" class="btn btn-lg btn-block btn-danger mx-1">Cancelar</a>
                             </div>
                         </div>
                     </form>
@@ -232,13 +237,16 @@
             language:{
                 url: "https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
             },
+            scrollX:        true,
+            scrollCollapse: true,              
             "aaSorting": [[ 0, "desc" ]],
             "columnDefs": [
             {
                 "targets": [ 0 ],
                 "visible": false,
                 "searchable": false
-            }
+            },
+          
         ]
         });
     } );
