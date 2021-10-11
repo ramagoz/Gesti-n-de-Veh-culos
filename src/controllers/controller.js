@@ -36,14 +36,20 @@ ctrl.postIndex = async(req, res) => {
     } else {
         passwordBD = respuesta.recordset[0].clave;
         ssn.user = respuesta.recordset[0].usuario;
+        estado = respuesta.recordset[0].estado;
 
-        if (await helpers.matchPassword(password, passwordBD)) {
-            ssn.auth = true;
-            ssn.idUser = respuesta.recordset[0].id;
-            ssn.idRol = respuesta.recordset[0].id_rol;
-            res.redirect('/vehiculos');
-        } else {
-            let msjError = { msj: "Contraseña incorrecta!" };
+        if (estado == 1) {
+            if (await helpers.matchPassword(password, passwordBD)) {
+                ssn.auth = true;
+                ssn.idUser = respuesta.recordset[0].id;
+                ssn.idRol = respuesta.recordset[0].id_rol;
+                res.redirect('/vehiculos');
+            } else {
+                let msjError = { msj: "Contraseña incorrecta!" };
+                res.render('auth/signin', { msjError });
+            }
+        } else if (estado == 0) {
+            let msjError = { msj: "Usuario deshabilitado, contacte con el administrador del sistema!" };
             res.render('auth/signin', { msjError });
         }
     }
@@ -686,6 +692,74 @@ ctrl.getUsuarios = async(req, res) => {
 
 
 };
+ctrl.postActualizarUsuario = async(req, res) => {
+
+    let { id, estado } = req.body;
+
+    try {
+        r = await ActualizarUsuario(id, estado);
+        if (r == 1) {
+            try {
+                usuarios = await ObtenerUsuarios();
+                roles = await ObtenerRoles();
+            } catch (error) {
+                console.log(error);
+                return;
+            }
+            let msjOk = { msj: "Datos de usuario actualizados!" };
+            res.render('usuarios', { usuarios, roles, msjOk });
+        } else {
+            let msjError = { msj: "Ocurrio un error al actualizar datos!" };
+            res.render('usuarios', { usuarios, roles, msjError });
+        }
+
+    } catch (error) {
+        console.log(error);
+        let msjError = { msj: "Ocurrio un error al actualizar datos! " + error };
+        res.render('usuarios', { msjError });
+    }
+
+}
+ctrl.getRestablecerAcceso = async(req, res) => {
+    id = req.params.id;
+
+    console.log('Id a restablecer acceso: ', id);
+
+    try {
+        usuarios = await ObtenerUsuarios();
+        roles = await ObtenerRoles();
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+
+    try {
+
+        query = `update sgv_usuarios
+        set clave = '$2a$10$95cZLsh.RByEPAt4x6kUlOBS7.Fwk.5J9dIUSlaN8f6ChJSHxYtNS'
+        where id = @id;`;
+
+        let pool = await sql.connect(databaseSqlServer)
+        respuesta = await pool.request()
+            .input('id', sql.Int, id)
+            .query(query);
+
+        console.log(respuesta);
+
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+
+    if (respuesta.rowsAffected[0] == 1) {
+        msjOk = { msj: "Acceso de usuario restablecido! Contraseña por defecto 123" };
+    } else {
+        msjError = { msj: "Ocurrio un error al restablecer el acceso! Vuelva a intentar! " };
+    }
+
+    res.render('usuarios', { usuarios, roles, msjOk });
+}
 ctrl.postUsuarios = async(req, res) => {
     let { user, password, password2, id_rol } = req.body;
     roles = await ObtenerRoles();
@@ -703,8 +777,8 @@ ctrl.postUsuarios = async(req, res) => {
 
         pass = await helpers.encryptPassword(password);
 
-        let query = `insert into sgv_usuarios (id_rol, usuario, clave)
-        values (@id_rol, @user, @pass);`;
+        let query = `insert into sgv_usuarios (id_rol, usuario, clave, estado)
+        values (@id_rol, @user, @pass, 1);`;
 
         try {
 
@@ -1178,7 +1252,7 @@ let ObtenerRepPorFecha = async(desde, hasta) => {
 }
 let ObtenerUsuarios = async() => {
 
-    let query = `select u.id, usuario, r.rol
+    let query = `select u.id, usuario, r.rol, u.estado
         from sgv_usuarios u
         join sgv_roles r on r.id = u.id_rol;`;
 
@@ -1191,6 +1265,21 @@ let ObtenerUsuarios = async() => {
         return;
     }
     return usuarios.recordset;
+
+}
+let ActualizarUsuario = async(id, estado) => {
+
+    let query = `update sgv_usuarios set estado=${estado} where id =${id};`;
+
+    try {
+        await sql.connect(databaseSqlServer);
+        r = await sql.query(query);
+
+    } catch (error) {
+        console.log(error);
+        return;
+    }
+    return r.rowsAffected[0];
 
 }
 let ObtenerRoles = async() => {

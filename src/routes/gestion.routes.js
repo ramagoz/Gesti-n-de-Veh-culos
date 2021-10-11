@@ -53,6 +53,10 @@ router.get('/auditoria', isLoggedIn, controller.getAuditoria);
 
 router.get('/usuarios', isLoggedIn, controller.getUsuarios);
 
+router.post('/actualizar-usuario', isLoggedIn, controller.postActualizarUsuario);
+
+router.get('/restablecer-acceso/:id', isLoggedIn, controller.getRestablecerAcceso);
+
 router.post('/usuarios', isLoggedIn, controller.postUsuarios);
 
 router.get('/cambiar-clave', isLoggedIn, controller.getCambiarClave);
