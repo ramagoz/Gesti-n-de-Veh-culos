@@ -744,9 +744,6 @@ ctrl.getRestablecerAcceso = async(req, res) => {
             .input('id', sql.Int, id)
             .query(query);
 
-        console.log(respuesta);
-
-
     } catch (error) {
         console.log(error);
         return;
