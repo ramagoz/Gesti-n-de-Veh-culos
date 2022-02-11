@@ -605,7 +605,6 @@ ctrl.postGenerarInforme = async(req, res) => {
         format: "A4",
         orientation: "portrait",
         border: "5mm",
-        timeout: '100000',
         header: {
             height: "10mm",
             contents: '<div style="text-align: center;"><h3>Informe - Sistema Gestión de vehículos</h3></div>'
