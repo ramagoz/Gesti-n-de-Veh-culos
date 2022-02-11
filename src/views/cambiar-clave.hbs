@@ -4,45 +4,46 @@
         <h2>Cambiar Contraseña</h2>
     </div>
 
-  <div class="row justify-content-center align-items-center minh-100">
-    <div class="mx-auto col-xs-12 col-sm-8 col-md-8 col-lg-4 col-xl-4">
-        {{#if msjError}}
-            <div class="col-12">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{msjError.msj}}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <div class="row justify-content-center align-items-center minh-100">
+        <div class="mx-auto col-xs-12 col-sm-8 col-md-8 col-lg-4 col-xl-4">
+            {{#if msjError}}
+                <div class="col-12">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{msjError.msj}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 </div>
-            </div>
-        {{/if}}
-        {{#if msjOk}}
-            <div class="col-12">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{msjOk.msj}}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+            {{/if}}
+            {{#if msjOk}}
+                <div class="col-12">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{msjOk.msj}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 </div>
-            </div>
-        {{/if}}
-        <div class="card text-center border-primary shadow-lg p-4">
+            {{/if}}
+            <div class="card text-center border-primary shadow-lg p-4">
                 <form action="/cambiar-clave" method="POST">
-                <div class="form-group">
-                    <input type="password" name="passwordActual" placeholder="Contraseña actual" class="form-control form-control-lg" required autofocus>
-                </div>
-                <div class="form-group">
-                    <input type="password" name="passwordNuevo" placeholder="Nueva contraseña" class="form-control form-control-lg" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" name="passwordConfirmar" placeholder="Confirmar nueva contraseña" class="form-control form-control-lg" required>
-                </div>
-                <button class="btn btn-success btn-lg btn-block">
-                    Confirmar
-                </button>
+                    <div class="form-group">
+                        <input type="password" name="passwordActual" placeholder="Contraseña actual" class="form-control form-control-lg" required autofocus>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="passwordNuevo" placeholder="Nueva contraseña" class="form-control form-control-lg" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="passwordConfirmar" placeholder="Confirmar nueva contraseña" class="form-control form-control-lg" required>
+                    </div>
+                    <button class="btn btn-success btn-lg btn-block">
+                        Confirmar
+                    </button>
                 </form>
+            </div>
         </div>
     </div>
-  </div>
+    <br><br>
 </div>
 
